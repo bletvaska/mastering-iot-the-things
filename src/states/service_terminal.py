@@ -1,3 +1,4 @@
+from commands.blink import Blink
 from commands.version import Version
 from machine import UART, Pin
 from parser import Parser
@@ -21,6 +22,7 @@ class ServiceTerminal(BaseState):
 
         self.parser = Parser()
         self.parser.register(Version(self.context))
+        self.parser.register(Blink(self.context))
         #
         # self.parser.register(Reset(self.device))
         #     self.parser.register(Bootloader(self.device))
