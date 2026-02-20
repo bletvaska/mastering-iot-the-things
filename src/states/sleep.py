@@ -12,4 +12,4 @@ class Sleep(BaseState):
 
         sleep(1)  # aby vsetci stihli spravit to, co treba
         # deepsleep()
-        return self
+        return None

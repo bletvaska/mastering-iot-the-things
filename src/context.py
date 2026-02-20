@@ -19,6 +19,10 @@ class Context:
         self.state.enter()
         while True:
             next_state = self.state.exec()
+
+            if next_state is None:
+                return
+
             if next_state is not self.state:
                 self.state.exit()
                 self.state = next_state
