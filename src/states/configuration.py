@@ -9,6 +9,11 @@ from .base import BaseState
 
 class Configuration(BaseState):
     name = "Configuration"
+    def enter(self) -> None:
+        super().enter()
+
+        self.context.diag_led[0] = (255, 165, 0)
+        self.context.diag_led.write()
 
     def exec(self):
         print('>> Creating default settings.')
@@ -24,6 +29,5 @@ class Configuration(BaseState):
             json.dump(data, file)
 
         # reset
-        # sleep(1)
-        # machine.reset()
-        return None
+        sleep(5)
+        machine.reset()

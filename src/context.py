@@ -1,4 +1,4 @@
-from constants import DIAG_LED_PIN
+from constants import DIAG_LED_PIN, BTN_PIN
 from machine import Pin
 from neopixel import NeoPixel
 
@@ -11,6 +11,8 @@ class Context:
 
         pin = Pin(DIAG_LED_PIN, Pin.OUT)
         self.diag_led = NeoPixel(pin, 1)
+
+        self.btn = Pin(BTN_PIN, Pin.IN)
 
     def change_state(self, state):
         self.state = state
