@@ -1,4 +1,7 @@
+from commands.version import Version
 from machine import UART, Pin
+from parser import Parser
+
 # from commands.bootloader import Bootloader
 # from commands.identify import Identify
 # from commands.reset import Reset
@@ -15,18 +18,20 @@ class ServiceTerminal(BaseState):
     def enter(self):
         super().enter()
         self.context.diag_led.set_color(5, 5, 5)
-    #     self.parser = Parser(self.device)
-    #
-    #     self.parser.register(Reset(self.device))
-    #     self.parser.register(Version(self.device))
-    #     self.parser.register(Bootloader(self.device))
-    #     self.parser.register(Reset(self.device))
-    #     self.parser.register(Time(self.device))
-    #     self.parser.register(Version(self.device))
-    #     self.parser.register(Identify(self.device))
+
+        self.parser = Parser()
+        self.parser.register(Version(self.context))
+        #
+        # self.parser.register(Reset(self.device))
+        #     self.parser.register(Bootloader(self.device))
+        #     self.parser.register(Reset(self.device))
+        #     self.parser.register(Time(self.device))
+        #     self.parser.register(Version(self.device))
+        #     self.parser.register(Identify(self.device))
 
         # inicializacia UART0 pre seriovú konzolu
-        self.uart = UART(0, baudrate=115200, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)
+        self.context.uart = UART(0, baudrate=115200, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)
+        self.uart = self.context.uart
         self.buffer = ""
 
     def _read_line(self):
@@ -63,6 +68,9 @@ class ServiceTerminal(BaseState):
         while True:
             self.uart.write('> ')
             line = self._read_line()
-            # output = self.parser.parse(line)
-            # if output is not None:
-            #     self.uart.write(f'{output}\r\n')
+
+            cmd = self.parser.parse(line)
+            if cmd is None:
+                self.uart.write('Unknown command\r\n')
+            else:
+                cmd.exec()
