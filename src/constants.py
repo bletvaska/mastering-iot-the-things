@@ -4,6 +4,9 @@ BTN_PIN = 20
 DIAG_LED_PIN = 18
 SVC_PIN = 6
 
+UART_TX_PIN = 16
+UART_RX_PIN = 17
+
 # paths
 SETTINGS_FILE = '/settings.json'
 
