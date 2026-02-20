@@ -1,3 +1,5 @@
+from time import sleep
+
 from .base import BaseState
 
 
@@ -8,6 +10,6 @@ class Sleep(BaseState):
         self.context.diag_led[0] = (0, 0, 0)
         self.context.diag_led.write()
 
+        sleep(1)  # aby vsetci stihli spravit to, co treba
         # deepsleep()
         return self
-
