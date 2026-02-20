@@ -1,9 +1,24 @@
 __version__ = '2025.2'
 __author__ = 'mirek <miroslav.binas@tuke.sk>'
 __all__ = [
+    'BaseModel',
+    'Field',
     'validator',
-    'BaseModel'
 ]
+
+class Field:
+    def __init__(self, *,
+          # default=MISSING,
+          # default_factory=MISSING,
+          init=True,
+          repr=True,
+          hash=None,
+          compare=True,
+          metadata=None,
+          # kw_only=MISSING,
+          doc=None
+          ):
+        pass
 
 
 def validator(field):
@@ -13,18 +28,12 @@ def validator(field):
                 self._func = f
                 self._field = field
                 self._is_validator = True
-<<<<<<< HEAD
 
             def __call__(self, instance, value):
                 return self._func(instance, value)
 
         return CallableWrapper(func)
 
-=======
-            def __call__(self, instance, value):  
-                return self._func(instance, value)
-        return CallableWrapper(func)
->>>>>>> 806a56d61b1a24c04088d94f2ce36318c7dd51ce
     return decorator
 
 
@@ -32,20 +41,12 @@ class BaseModel:
     def __init__(self, **kwargs):
         setattr(self.__class__, '__validators', {})
         setattr(self.__class__, '__annotations__', {})
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 806a56d61b1a24c04088d94f2ce36318c7dd51ce
         for key, value in self.__class__.__dict__.items():
             # convert class attributes to fields
             if not key.startswith("__") and not callable(value):
                 setattr(self, key, value)
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> 806a56d61b1a24c04088d94f2ce36318c7dd51ce
             # get validators
             if callable(value) is True and getattr(value, "_is_validator", False) is True:
                 field = value._field
@@ -54,11 +55,7 @@ class BaseModel:
         # update fields with kwargs
         for field, value in kwargs.items():
             setattr(self, field, value)
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 806a56d61b1a24c04088d94f2ce36318c7dd51ce
         # create field annotations
         for field, value in self.__dict__.items():
             self.__class__.__annotations__[field] = type(value)
@@ -78,7 +75,6 @@ class BaseModel:
         # first assignment is OK if field is None
         if current_value is None:
             super().__setattr__(name, value)
-<<<<<<< HEAD
 
         # if value is dictionary, then expect it's key is of custom class type
         elif isinstance(value, dict):
@@ -88,17 +84,6 @@ class BaseModel:
         elif not isinstance(value, current_type):
             raise ValueError(f'Value "{value}" for attribute "{name}" is not of type "{current_type.__name__}".')
 
-=======
-        
-        # if value is dictionary, then expect it's key is of custom class type
-        elif isinstance(value, dict):
-            super().__setattr__(name, current_type(**value))
-            
-        # if value is not of default attr type, then raise exception 
-        elif not isinstance(value, current_type):
-            raise ValueError(f'Value "{value}" for attribute "{name}" is not of type "{current_type.__name__}".')
-        
->>>>>>> 806a56d61b1a24c04088d94f2ce36318c7dd51ce
         else:
             super().__setattr__(name, value)
 
@@ -111,17 +96,10 @@ class BaseModel:
     def __repr__(self) -> str:
         items = [f"{key}={repr(value)}" for key, value in self.__dict__.items()]
         return f"{self.__class__.__name__}({','.join(items)})"
-<<<<<<< HEAD
 
     def model_dump(self) -> dict:
         result = {}
 
-=======
-    
-    def model_dump(self) -> dict:
-        result = {}
-        
->>>>>>> 806a56d61b1a24c04088d94f2ce36318c7dd51ce
         for field, value in self.__dict__.items():
             if isinstance(value, BaseModel):
                 result[field] = value.model_dump()
@@ -132,11 +110,5 @@ class BaseModel:
                 result[field] = entries
             else:
                 result[field] = value
-<<<<<<< HEAD
 
         return result
-=======
-        
-        return result
-
->>>>>>> 806a56d61b1a24c04088d94f2ce36318c7dd51ce

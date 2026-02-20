@@ -9,9 +9,10 @@ class THSensor:
         self.state = state
 
     def run(self):
+        self.state.enter()
         while True:
-            current_state = self.state
-
-            current_state.enter()
-            self.state = current_state.exec()
-            current_state.exit()
+            next_state = self.state.exec()
+            if next_state is not self.state:
+                self.state.exit()
+                self.state = next_state
+                self.state.enter()
