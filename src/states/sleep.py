@@ -7,8 +7,7 @@ class Sleep(BaseState):
     name = "Sleep"
 
     def exec(self):
-        self.context.diag_led[0] = (0, 0, 0)
-        self.context.diag_led.write()
+        self.context.diag_led.off()
 
         sleep(1)  # aby vsetci stihli spravit to, co treba
         # deepsleep()

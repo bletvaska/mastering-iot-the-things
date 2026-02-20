@@ -16,25 +16,21 @@ class Init(BaseState):
     def enter(self) -> None:
         super().enter()
 
-        self.context.diag_led[0] = (0, 255, 0)
-        self.context.diag_led.write()
+        self.context.diag_led.set_color(0, 255, 0)
 
     def exec(self):
-        print(f'ticks: {ticks_ms()}')
         if self.context.btn.value() == 0:
 
             while self.context.btn.value() == 0:
                 if ticks_ms() >= SHORT_PRESS_DURATION:
                     print('>> Short press duration')
-                    self.context.diag_led[0] = (255, 165, 0)
-                    self.context.diag_led.write()
+                    self.context.diag_led.set_color( 255, 165, 0)
                     break
 
             while self.context.btn.value() == 0:
                 if ticks_ms() >= LONG_PRESS_DURATION:
                     print('>> Long press duration')
-                    self.context.diag_led[0] = (128, 0, 128)
-                    self.context.diag_led.write()
+                    self.context.diag_led.set_color(128, 0, 128)
                     break
 
             # wait for btn release

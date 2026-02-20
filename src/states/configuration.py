@@ -12,8 +12,7 @@ class Configuration(BaseState):
     def enter(self) -> None:
         super().enter()
 
-        self.context.diag_led[0] = (255, 165, 0)
-        self.context.diag_led.write()
+        self.context.diag_led.set_color(255, 165, 0)
 
     def exec(self):
         print('>> Creating default settings.')

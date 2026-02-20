@@ -1,6 +1,8 @@
+from hw.mixins.onoff import OnOffMixin
+from hw.ws2812b import WS2812B
+
 from constants import DIAG_LED_PIN, BTN_PIN
 from machine import Pin
-from neopixel import NeoPixel
 
 from states.init import Init
 
@@ -9,8 +11,7 @@ class Context:
     def __init__(self):
         self.state = Init(self)
 
-        pin = Pin(DIAG_LED_PIN, Pin.OUT)
-        self.diag_led = NeoPixel(pin, 1)
+        self.diag_led = WS2812B(DIAG_LED_PIN, 1)
 
         self.btn = Pin(BTN_PIN, Pin.IN)
 
