@@ -1,7 +1,7 @@
 from states.init import Init
 
 
-class THSensor:
+class Context:
     def __init__(self):
         self.state = Init(self)
 

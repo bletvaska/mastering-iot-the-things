@@ -4,7 +4,7 @@ import requests
 import json
 from time import sleep
 
-from thsensor import THSensor
+from context import Context
 
 from constants import DHT_PIN
 from helpers import do_connect, get_settings
@@ -29,5 +29,5 @@ from helpers import do_connect, get_settings
 #     sleep(10)
 
 
-thsensor = THSensor()
+thsensor = Context()
 thsensor.run()
