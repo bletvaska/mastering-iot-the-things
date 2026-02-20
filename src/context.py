@@ -4,7 +4,7 @@ from hw.mixins.onoff import OnOffMixin
 from hw.mixins.temperature import TemperatureMixin
 from hw.ws2812b import WS2812B
 
-from constants import DIAG_LED_PIN, BTN_PIN, DHT_PIN
+from constants import DIAG_LED_PIN, BTN_PIN, DHT_PIN, SVC_PIN
 from machine import Pin
 
 from states.init import Init
@@ -21,6 +21,8 @@ class Context:
         sensor = DHT11(DHT_PIN)
         self.humidity_sensor: HumidityMixin = sensor
         self.temperature_sensor: TemperatureMixin = sensor
+
+        self.terminal = Pin(SVC_PIN, Pin.IN, Pin.PULL_UP)
 
     def change_state(self, state):
         self.state = state

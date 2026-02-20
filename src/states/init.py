@@ -1,6 +1,8 @@
 import json
 from time import ticks_ms
 
+from states.service_terminal import ServiceTerminal
+
 from .factory_reset import FactoryReset
 from .configuration import Configuration
 from constants import SETTINGS_FILE, SHORT_PRESS_DURATION, LONG_PRESS_DURATION
@@ -19,6 +21,10 @@ class Init(BaseState):
         self.context.diag_led.set_color(0, 255, 0)
 
     def exec(self):
+        if self.context.terminal.value() == 0:
+            return ServiceTerminal(self.context)
+
+
         if self.context.btn.value() == 0:
 
             while self.context.btn.value() == 0:

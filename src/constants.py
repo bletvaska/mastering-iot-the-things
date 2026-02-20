@@ -2,6 +2,7 @@
 DHT_PIN = 3
 BTN_PIN = 20
 DIAG_LED_PIN = 18
+SVC_PIN = 6
 
 # paths
 SETTINGS_FILE = '/settings.json'
