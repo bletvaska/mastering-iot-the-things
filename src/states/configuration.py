@@ -11,6 +11,8 @@ class Configuration(BaseState):
     name = "Configuration"
 
     def exec(self):
+        print('>> Creating default settings.')
+
         # create default settings
         settings = Settings()
         settings.wifi.ssid = 'hello.world'
