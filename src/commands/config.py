@@ -4,11 +4,11 @@ from commands.base import BaseCommand
 class Config(BaseCommand):
     name = 'config'
     description = 'Configuration Management.'
-    usage = ('Usage:\n'
-             '  config show                shows configuration\n'
-             '  config set <key> <value>   sets configuration key\n'
-             '  config get <key>           gets configuration value\n'
-             )
+    usage = (
+        ('config show', 'shows configuration'),
+        ('config set <key> <value>', 'sets configuration key'),
+        ('config get <key>', 'gets configuration value'),
+    )
 
     def exec(self) -> None:
         if len(self.params) == 0:
@@ -16,5 +16,3 @@ class Config(BaseCommand):
             return
 
         cmd = self.params[0].lower()
-
-

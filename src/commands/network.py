@@ -5,12 +5,13 @@ import machine
 class Network(BaseCommand):
     name = 'net'
     description = 'Network interface management.'
-    usage = ('net connect      Connect to network.\n'
-             'net disconnect   Disconnect from  network.\n'
-             'net stat         Connection status.\n'
-             'net deactivate   Deinitialize interface.\n'
-             'net scan         Scan networks.\n'
-             )
+    usage = (
+        ('net connect', 'Connect to network.'),
+        ('net disconnect', 'Disconnect from  network.'),
+        ('net stat', 'Connection status.'),
+        ('net deactivate', 'Deinitialize interface.'),
+        ('net scan', 'Scan networks.'),
+    )
 
     def exec(self) -> None:
         if len(self.params) == 0:

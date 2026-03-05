@@ -1,14 +1,16 @@
 from time import sleep
-
 from machine import reset, soft_reset
 
 from commands.base import BaseCommand
 
+
 class Reset(BaseCommand):
     name = 'reset'
     description = 'Soft/Hard reset'
-    usage = ('reset soft   Soft reset.\n'
-             'reset hard   Hard reset.\n')
+    usage = (
+        ('reset soft', 'Soft reset.'),
+        ('reset hard', 'Hard reset.'),
+    )
 
     def exec(self) -> None:
         if len(self.params) != 1 or self.params[0] not in ['soft', 'hard']:

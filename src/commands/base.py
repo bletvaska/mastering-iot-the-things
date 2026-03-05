@@ -10,3 +10,10 @@ class BaseCommand():
 
     def exec(self):
         raise NotImplementedError()
+
+    def show_usage(self):
+        print('Usage:\n')
+
+        for option, description in self.usage:
+            print(f'  {option:30} {description}')
+
