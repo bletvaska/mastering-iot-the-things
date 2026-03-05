@@ -24,6 +24,7 @@ class Context:
         self.terminal = Pin(SVC_PIN, Pin.IN, Pin.PULL_UP)
 
         self.wlan = WLAN()
+        self.settings = None
 
     def change_state(self, state):
         self.state = state
