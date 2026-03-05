@@ -29,5 +29,6 @@ from helpers import do_connect, get_settings
 #     sleep(10)
 
 
-thsensor = Context()
-thsensor.run()
+if __name__ == "__main__":
+    thsensor = Context()
+    thsensor.run()

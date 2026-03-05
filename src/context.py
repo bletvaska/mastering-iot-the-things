@@ -23,7 +23,6 @@ class Context:
         self.temperature_sensor: TemperatureMixin = sensor
 
         self.terminal = Pin(SVC_PIN, Pin.IN, Pin.PULL_UP)
-        self.uart = None
 
     def change_state(self, state):
         self.state = state

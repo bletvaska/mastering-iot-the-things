@@ -1,5 +1,7 @@
 import os
 
+from commands.reset import Reset
+
 from commands.blink import Blink
 from commands.config import Config
 from commands.version import Version
@@ -20,11 +22,11 @@ class ServiceTerminal(BaseState):
         self.parser.register(Version(self.context))
         self.parser.register(Blink(self.context))
         self.parser.register(Config(self.context))
+        self.parser.register(Reset(self.context))
 
         # inicializacia UART0 pre seriovú konzolu
         uart = UART(0, baudrate=115200, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)
         os.dupterm(uart)
-
 
     def exec(self):
         print('# Welcome to Service Terminal')
