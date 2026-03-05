@@ -1,8 +1,8 @@
 class BaseCommand():
     name: str
     description: str
-    params: list[str]
     usage: str
+    params: list[str]
 
     def __init__(self, context):
         self.params = []

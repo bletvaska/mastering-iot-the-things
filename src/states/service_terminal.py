@@ -1,5 +1,6 @@
 import os
 
+from commands.network import Network
 from commands.reset import Reset
 
 from commands.blink import Blink
@@ -23,6 +24,7 @@ class ServiceTerminal(BaseState):
         self.parser.register(Blink(self.context))
         self.parser.register(Config(self.context))
         self.parser.register(Reset(self.context))
+        self.parser.register(Network(self.context))
 
         # inicializacia UART0 pre seriovú konzolu
         uart = UART(0, baudrate=115200, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)

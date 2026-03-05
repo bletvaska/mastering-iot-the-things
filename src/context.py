@@ -1,12 +1,11 @@
+from machine import Pin
+from network import WLAN
+
 from hw.dh11 import DHT11
 from hw.mixins.humidity import HumidityMixin
-from hw.mixins.onoff import OnOffMixin
 from hw.mixins.temperature import TemperatureMixin
 from hw.ws2812b import WS2812B
-
 from constants import DIAG_LED_PIN, BTN_PIN, DHT_PIN, SVC_PIN
-from machine import Pin
-
 from states.init import Init
 
 
@@ -23,6 +22,8 @@ class Context:
         self.temperature_sensor: TemperatureMixin = sensor
 
         self.terminal = Pin(SVC_PIN, Pin.IN, Pin.PULL_UP)
+
+        self.wlan = WLAN()
 
     def change_state(self, state):
         self.state = state
