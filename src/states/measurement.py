@@ -1,7 +1,7 @@
 from time import sleep
 
+from states.connect_network import ConnectNetwork
 from hw.mixins.temperature import TemperatureUnit
-from .sleep import Sleep
 from .base import BaseState
 
 
@@ -17,4 +17,4 @@ class Measurement(BaseState):
         value = self.context.humidity_sensor.humidity()
         print(f'Current Humidity is {value}')
 
-        return Sleep(self.context)
+        return ConnectNetwork(self.context)
