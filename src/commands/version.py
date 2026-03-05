@@ -1,4 +1,5 @@
 from commands.base import BaseCommand
+from version import VERSION
 
 
 class Version(BaseCommand):
@@ -6,4 +7,4 @@ class Version(BaseCommand):
     description = 'Show version'
 
     def exec(self) -> None:
-        self.context.uart.write('Version 2026.1\r\n')
+        print(f'Version: {VERSION}')

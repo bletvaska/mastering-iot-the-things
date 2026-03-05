@@ -2,7 +2,7 @@ from machine import Pin
 import dht
 
 from hw.mixins.humidity import HumidityMixin
-from hw.mixins.temperature import TemperatureMixin
+from hw.mixins.temperature import TemperatureMixin, TemperatureUnit
 
 
 class DHT11(TemperatureMixin, HumidityMixin):
@@ -10,15 +10,15 @@ class DHT11(TemperatureMixin, HumidityMixin):
         pin = Pin(pinnr, Pin.IN)
         self.sensor = dht.DHT11(pin)
 
-    def temperature(self, unit=TemperatureMixin.Unit.STANDARD) -> float:
+    def temperature(self, unit=TemperatureUnit.STANDARD) -> float:
         self.sensor.measure()
         value = self.sensor.temperature()
 
-        if unit == TemperatureMixin.Unit.IMPERIAL:
+        if unit == TemperatureUnit.IMPERIAL:
             return (value * 9 / 5) + 32
-        elif unit == TemperatureMixin.Unit.STANDARD:
+        elif unit == TemperatureUnit.STANDARD:
             return value - 273
-        elif unit == TemperatureMixin.Unit.METRIC:
+        elif unit == TemperatureUnit.METRIC:
             return value
 
         raise ValueError(f'Invalid temperature unit: {unit}')

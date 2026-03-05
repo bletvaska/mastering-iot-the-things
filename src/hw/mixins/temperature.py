@@ -1,8 +1,8 @@
-class TemperatureMixin:
-    class Unit:
-        IMPERIAL: str = 'imperial'
-        STANDARD: str = 'standard'
-        METRIC: str = 'metric'
+class TemperatureUnit:
+    IMPERIAL: str = 'imperial'
+    STANDARD: str = 'standard'
+    METRIC: str = 'metric'
 
-    def temperature(self, units=Unit.METRIC) -> float:
+class TemperatureMixin:
+    def temperature(self, units=TemperatureUnit.METRIC) -> float:
         raise NotImplementedError
