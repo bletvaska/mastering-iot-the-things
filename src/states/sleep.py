@@ -8,8 +8,8 @@ class Sleep(BaseState):
 
     def exec(self):
         self.context.diag_led.off()
-        self.context.wlan.disconnect()
-        self.context.wlan.deinit()
+        # self.context.wlan.disconnect()
+        # self.context.wlan.deinit()
 
         sleep(1)  # aby vsetci stihli spravit to, co treba
         # deepsleep()
