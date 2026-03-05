@@ -1,7 +1,6 @@
 from time import sleep
 from machine import reset, soft_reset
-
-from commands.base import BaseCommand
+from .base import BaseCommand
 
 
 class Reset(BaseCommand):
@@ -15,7 +14,7 @@ class Reset(BaseCommand):
     def exec(self) -> None:
         if len(self.params) != 1 or self.params[0] not in ['soft', 'hard']:
             print('Wrong usage.')
-            print(self.usage)
+            self.show_usage()
             return
 
         if self.params[0] == 'soft':

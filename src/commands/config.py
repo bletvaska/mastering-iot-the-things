@@ -1,4 +1,4 @@
-from commands.base import BaseCommand
+from .base import BaseCommand
 
 
 class Config(BaseCommand):
@@ -12,7 +12,7 @@ class Config(BaseCommand):
 
     def exec(self) -> None:
         if len(self.params) == 0:
-            print(self.usage)
+            self.show_usage()
             return
 
         cmd = self.params[0].lower()

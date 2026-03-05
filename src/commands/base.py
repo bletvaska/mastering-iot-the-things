@@ -1,7 +1,7 @@
 class BaseCommand():
     name: str
     description: str
-    usage: str
+    usage: str = None
     params: list[str]
 
     def __init__(self, context):
@@ -12,8 +12,6 @@ class BaseCommand():
         raise NotImplementedError()
 
     def show_usage(self):
-        print('Usage:\n')
-
+        print('Usage:')
         for option, description in self.usage:
             print(f'  {option:30} {description}')
-

@@ -1,5 +1,6 @@
-from commands.base import BaseCommand
 import machine
+
+from .base import BaseCommand
 
 
 class Network(BaseCommand):
@@ -16,7 +17,7 @@ class Network(BaseCommand):
     def exec(self) -> None:
         if len(self.params) == 0:
             print('Error: Wrong Usage')
-            print(self.usage)
+            self.show_usage()
             return
 
         wlan = self.context.wlan

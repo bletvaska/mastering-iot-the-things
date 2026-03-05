@@ -1,6 +1,6 @@
 from time import sleep
 
-from commands.base import BaseCommand
+from .base import BaseCommand
 
 
 class Blink(BaseCommand):

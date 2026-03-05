@@ -1,4 +1,4 @@
-from commands.base import BaseCommand
+from .base import BaseCommand
 from version import VERSION
 
 
