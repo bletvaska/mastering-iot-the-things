@@ -1,8 +1,8 @@
 from machine import Pin
 from neopixel import NeoPixel
 
-from hw.mixins.colorlight import ColorlightMixin
-from hw.mixins.onoff import OnOffMixin
+from hw.mixins.actuators.colorlight import ColorlightMixin
+from hw.mixins.actuators.onoff import OnOffMixin
 
 
 class WS2812B(OnOffMixin, ColorlightMixin):

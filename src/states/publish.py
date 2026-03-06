@@ -19,6 +19,7 @@ class Publish(BaseState):
         with open(METRICS_FILE, 'r') as file:
             for line in file:
                 parts = line.strip().split(';')
+
                 temperature = Metric(
                     dt=parts[0],
                     name='temperature',

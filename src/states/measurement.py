@@ -5,7 +5,7 @@ from machine import RTC
 
 from constants import METRICS_FILE
 from .connect_network import ConnectNetwork
-from hw.mixins.temperature import TemperatureUnit
+from hw.mixins.sensors.temperature import TemperatureUnit
 from .base import BaseState
 
 

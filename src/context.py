@@ -2,8 +2,8 @@ from machine import Pin
 from network import WLAN
 
 from hw.dh11 import DHT11
-from hw.mixins.humidity import HumidityMixin
-from hw.mixins.temperature import TemperatureMixin
+from hw.mixins.sensors.humidity import HumidityMixin
+from hw.mixins.sensors.temperature import TemperatureMixin
 from hw.ws2812b import WS2812B
 from constants import DIAG_LED_PIN, BTN_PIN, DHT_PIN, SVC_PIN
 from models.settings import Settings

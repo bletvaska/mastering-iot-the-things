@@ -7,3 +7,4 @@ class OnOffMixin:
 
     def toggle(self):
         raise NotImplementedError
+    

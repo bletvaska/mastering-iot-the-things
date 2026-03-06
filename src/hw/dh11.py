@@ -1,8 +1,8 @@
 from machine import Pin
 import dht
 
-from hw.mixins.humidity import HumidityMixin
-from hw.mixins.temperature import TemperatureMixin, TemperatureUnit
+from hw.mixins.sensors.humidity import HumidityMixin
+from hw.mixins.sensors.temperature import TemperatureMixin, TemperatureUnit
 
 
 class DHT11(TemperatureMixin, HumidityMixin):
