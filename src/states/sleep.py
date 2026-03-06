@@ -17,8 +17,8 @@ class Sleep(BaseState):
         )
         self.context.mqtt_client.disconnect()
 
-        # self.context.wlan.disconnect()
-        # self.context.wlan.deinit()
+        self.context.wlan.disconnect()
+        self.context.wlan.deinit()
 
         sleep(1)  # aby vsetci stihli spravit to, co treba
         # deepsleep()
