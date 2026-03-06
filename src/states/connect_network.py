@@ -1,18 +1,8 @@
-import json
-from time import sleep
-
 from umqtt.simple import MQTTClient
 
-from .sleep import Sleep
+from .ota import OTA
 from .base import BaseState
 from helpers import do_connect
-
-
-def on_message(topic: bytes, message: bytes):
-    topic = topic.decode('utf-8')
-    print(f'>> Processing message: {message}')
-    message = json.loads(message)
-    print(f'>>> {topic}: {message}')
 
 
 class ConnectNetwork(BaseState):
@@ -26,7 +16,7 @@ class ConnectNetwork(BaseState):
         # connect to mqtt
         mqtt = settings.mqtt
         device_id = settings.device_id
-        client = MQTTClient(
+        self.context.mqtt_client = MQTTClient(
             device_id,
             mqtt.broker,
             port=mqtt.port,
@@ -35,34 +25,21 @@ class ConnectNetwork(BaseState):
             keepalive=10,
             ssl=not mqtt.insecure
         )
-        client.set_callback(on_message)
 
-        client.set_last_will(
+        self.context.mqtt_client.set_last_will(
             f'{settings.base_topic()}/status',
-            '{"status": "offline", "owner": "mirek"}',
+            '{"status": "offline", "owner": "mirek", "reason": "lastwill"}',
             retain=True
         )
 
-        client.connect()
+        self.context.mqtt_client.connect()
 
-        client.publish(
+        self.context.mqtt_client.publish(
             f'{settings.base_topic()}/status',
             '{"status": "online", "owner": "mirek"}',
             retain=True
         )
-        client.subscribe(f'{settings.base_topic()}/cmd')
 
-        print('>> Waiting for messages...')
-        while True:
-            client.check_msg()
-            client.ping()
-            sleep(0.2)
+        # self.context.mqtt_client.ping()
 
-        client.publish(
-            f'{settings.base_topic()}/status',
-            '{"status": "offline", "owner": "mirek"}',
-            retain=True
-        )
-        client.disconnect()
-
-        return Sleep(self.context)
+        return OTA(self.context)

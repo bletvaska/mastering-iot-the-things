@@ -26,6 +26,7 @@ class Context:
 
         self.wlan = WLAN()
         self.settings: Settings = None
+        self.mqtt_client = None
 
     def change_state(self, state):
         self.state = state

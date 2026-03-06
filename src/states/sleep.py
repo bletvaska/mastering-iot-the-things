@@ -8,6 +8,15 @@ class Sleep(BaseState):
 
     def exec(self):
         self.context.diag_led.off()
+
+        # disconnect from mqtt
+        self.context.mqtt_client.publish(
+            f'{self.context.settings.base_topic()}/status',
+            '{"status": "offline", "owner": "mirek"}',
+            retain=True
+        )
+        self.context.mqtt_client.disconnect()
+
         # self.context.wlan.disconnect()
         # self.context.wlan.deinit()
 
