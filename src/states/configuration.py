@@ -1,3 +1,4 @@
+import binascii
 import json
 import machine
 from time import sleep
@@ -21,6 +22,18 @@ class Configuration(BaseState):
         settings = Settings()
         settings.wifi.ssid = 'hello.world'
         settings.wifi.password = 'jahodka123'
+
+        uid = machine.unique_id()
+        settings.device_id = binascii.hexlify(uid).decode()
+        settings.name = 'THSensor'
+
+        # mqtt configuration
+        settings.mqtt.broker = 'greenhub.fei.tuke.sk'
+        settings.mqtt.port = 8883
+        settings.mqtt.username = 'riesitel'
+        settings.mqtt.password = '2VN1zAW0zyffPv'
+        settings.mqtt.insecure = False
+        settings.mqtt.topic_prefix = 'sub/sk/za/thsensor/'
 
         # save default settings to file
         data = settings.model_dump()
