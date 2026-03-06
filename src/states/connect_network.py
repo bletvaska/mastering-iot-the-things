@@ -1,6 +1,6 @@
 from umqtt.simple import MQTTClient
 
-from .ota import OTA
+from .publish import Publish
 from .base import BaseState
 from helpers import do_connect
 
@@ -42,4 +42,4 @@ class ConnectNetwork(BaseState):
 
         # self.context.mqtt_client.ping()
 
-        return OTA(self.context)
+        return Publish(self.context)

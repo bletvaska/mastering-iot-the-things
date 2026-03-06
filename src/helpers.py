@@ -28,3 +28,6 @@ def do_connect(ssid: str, password: str):
     ntptime.settime()
     print(machine.RTC().datetime())
 
+
+def to_iso8601(dt: tuple) -> str:
+    return f'{dt[0]}-{dt[1]:02}-{dt[2]:02}T{dt[4]:02}:{dt[5]:02}:{dt[6]:02}Z'
