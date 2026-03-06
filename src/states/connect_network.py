@@ -6,6 +6,8 @@ from helpers import do_connect
 
 
 class ConnectNetwork(BaseState):
+    name = "Connect Network"
+
     def exec(self):
         settings = self.context.settings
 

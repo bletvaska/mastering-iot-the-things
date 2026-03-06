@@ -15,6 +15,7 @@ class OTA(BaseState):
     name = "OTA"
 
     def enter(self) -> None:
+        super().enter()
         settings = self.context.settings
 
         self.context.mqtt_client.set_callback(on_message)
@@ -26,6 +27,7 @@ class OTA(BaseState):
         return Sleep(self.context)
 
     def exit(self) -> None:
+        super().exit()
         settings = self.context.settings
 
         self.context.mqtt_client.unsubscribe(f'{settings.base_topic()}/cmd')

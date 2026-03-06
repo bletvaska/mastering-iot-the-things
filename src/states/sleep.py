@@ -1,4 +1,6 @@
 from time import sleep
+from machine import lightsleep
+
 
 from .base import BaseState
 
@@ -22,4 +24,7 @@ class Sleep(BaseState):
 
         sleep(1)  # aby vsetci stihli spravit to, co treba
         # deepsleep()
-        return None
+        lightsleep(10 * 1000)
+        from states.init import Init
+        return Init(self.context)
+        # return None

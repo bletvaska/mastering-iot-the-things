@@ -2,10 +2,10 @@ import json
 import os
 from machine import RTC
 
+from states.ota import OTA
 from constants import METRICS_FILE
 from models.message import Message
 from models.metric import Metric
-from .sleep import Sleep
 from .base import BaseState
 from helpers import to_iso8601
 
@@ -14,6 +14,7 @@ class Publish(BaseState):
     name = "Publish"
 
     def enter(self) -> None:
+        super().enter()
         self.metrics = []
 
         with open(METRICS_FILE, 'r') as file:
@@ -45,7 +46,8 @@ class Publish(BaseState):
         topic = f'{self.context.settings.base_topic()}/data'
         self.context.mqtt_client.publish(topic, json.dumps(message.model_dump()))
 
-        return Sleep(self.context)
+        return OTA(self.context)
 
     def exit(self) -> None:
+        super().exit()
         os.unlink(METRICS_FILE)
