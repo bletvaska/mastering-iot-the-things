@@ -10,8 +10,8 @@ from states.init import Init
 
 
 class Context:
-    def __init__(self):
-        self.state = Init(self)
+    def __init__(self, initial_state=Init):
+        self.state = initial_state(self)
 
         self.diag_led = WS2812B(DIAG_LED_PIN, 1)
 

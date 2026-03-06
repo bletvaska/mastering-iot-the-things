@@ -5,7 +5,7 @@ from commands.commands import Commands
 from commands.network import Network
 from commands.reset import Reset
 from commands.blink import Blink
-from commands.config import Config
+from commands.settings import Settings
 from commands.version import Version
 from machine import UART, Pin
 from parser import Parser
@@ -23,7 +23,7 @@ class ServiceTerminal(BaseState):
         self.parser = Parser()
         self.parser.register(Version(self.context))
         self.parser.register(Blink(self.context))
-        self.parser.register(Config(self.context))
+        self.parser.register(Settings(self.context))
         self.parser.register(Reset(self.context))
         self.parser.register(Network(self.context))
         self.parser.register(Commands(self.context, self.parser.commands))

@@ -1,15 +1,13 @@
 import json
 from time import ticks_ms
 
-from states.service_terminal import ServiceTerminal
-
+from .service_terminal import ServiceTerminal
 from .factory_reset import FactoryReset
 from .configuration import Configuration
+from .measurement import Measurement
+from .base import BaseState
 from constants import SETTINGS_FILE, SHORT_PRESS_DURATION, LONG_PRESS_DURATION
 from models.settings import Settings
-from .measurement import Measurement
-
-from .base import BaseState
 
 
 class Init(BaseState):
@@ -20,17 +18,24 @@ class Init(BaseState):
 
         self.context.diag_led.set_color(0, 255, 0)
 
+        # load settings
+        try:
+            with open(SETTINGS_FILE, 'r') as file:
+                data = json.load(file)
+                self.context.settings = Settings(**data)
+        except OSError:
+            print('>> Missing settings file.')
+
     def exec(self):
         if self.context.terminal.value() == 0:
             return ServiceTerminal(self.context)
-
 
         if self.context.btn.value() == 0:
 
             while self.context.btn.value() == 0:
                 if ticks_ms() >= SHORT_PRESS_DURATION:
                     print('>> Short press duration')
-                    self.context.diag_led.set_color( 255, 165, 0)
+                    self.context.diag_led.set_color(255, 165, 0)
                     break
 
             while self.context.btn.value() == 0:
@@ -49,13 +54,7 @@ class Init(BaseState):
             if ticks_ms() >= SHORT_PRESS_DURATION:
                 return Configuration(self.context)
 
-        try:
-            # load settings
-            with open(SETTINGS_FILE, 'r') as file:
-                data = json.load(file)
-                self.context.settings = Settings(**data)
-        except OSError as ex:
-            print('>> Missing settings file.')
+        if self.context.settings is None:
             return Configuration(self.context)
 
         return Measurement(self.context)
