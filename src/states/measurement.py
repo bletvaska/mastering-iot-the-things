@@ -1,6 +1,6 @@
 from time import sleep
 
-from states.connect_network import ConnectNetwork
+from .connect_network import ConnectNetwork
 from hw.mixins.temperature import TemperatureUnit
 from .base import BaseState
 
