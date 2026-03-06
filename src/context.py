@@ -6,6 +6,7 @@ from hw.mixins.humidity import HumidityMixin
 from hw.mixins.temperature import TemperatureMixin
 from hw.ws2812b import WS2812B
 from constants import DIAG_LED_PIN, BTN_PIN, DHT_PIN, SVC_PIN
+from models.settings import Settings
 from states.init import Init
 
 
@@ -24,7 +25,7 @@ class Context:
         self.terminal = Pin(SVC_PIN, Pin.IN, Pin.PULL_UP)
 
         self.wlan = WLAN()
-        self.settings = None
+        self.settings: Settings = None
 
     def change_state(self, state):
         self.state = state

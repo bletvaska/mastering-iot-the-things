@@ -27,3 +27,4 @@ def do_connect(ssid: str, password: str):
     import ntptime
     ntptime.settime()
     print(machine.RTC().datetime())
+

@@ -33,7 +33,7 @@ class Configuration(BaseState):
         settings.mqtt.username = 'riesitel'
         settings.mqtt.password = '2VN1zAW0zyffPv'
         settings.mqtt.insecure = False
-        settings.mqtt.topic_prefix = 'sub/sk/za/thsensor/'
+        settings.mqtt.topic_prefix = 'sub/sk/za/thsensor'
 
         # save default settings to file
         data = settings.model_dump()
