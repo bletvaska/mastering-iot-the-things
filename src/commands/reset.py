@@ -14,7 +14,7 @@ class Reset(BaseCommand):
     def exec(self) -> None:
         if len(self.params) != 1 or self.params[0] not in ['soft', 'hard']:
             print('Wrong usage.')
-            self.show_usage()
+            print(self)
             return
 
         if self.params[0] == 'soft':
@@ -22,7 +22,7 @@ class Reset(BaseCommand):
             sleep(0.1)
             soft_reset()
 
-        if self.params[0] == 'hard':
+        elif self.params[0] == 'hard':
             print('Hard reset.')
             sleep(0.1)
             reset()

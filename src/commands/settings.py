@@ -19,7 +19,7 @@ class Settings(BaseCommand):
             return
 
         if len(self.params) == 0:
-            self.show_usage()
+            print(self)
             return
 
         subcmd = self.params[0]
@@ -29,4 +29,4 @@ class Settings(BaseCommand):
             print(json.dumps(settings))
         else:
             print('Wrong usage.')
-            self.show_usage()
+            print(self)

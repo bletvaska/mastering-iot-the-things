@@ -11,7 +11,10 @@ class BaseCommand():
     def exec(self):
         raise NotImplementedError()
 
-    def show_usage(self):
-        print('Usage:')
+    def __str__(self):
+        if self.usage is None:
+            return f'{self.name}: {self.description}'
+        lines = ['Usage:']
         for option, description in self.usage:
-            print(f'  {option:30} {description}')
+            lines.append(f'  {option:30} {description}')
+        return '\n'.join(lines)

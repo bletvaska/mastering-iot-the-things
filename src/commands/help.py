@@ -15,14 +15,12 @@ class Help(BaseCommand):
     def exec(self) -> None:
         if len(self.params) != 1:
             print('Wrong number of parameters.')
-            self.show_usage()
+            print(self)
             return
 
         for cmd in self.commands:
             if cmd.name == self.params[0]:
-                print(cmd.description)
-                if cmd.usage is not None:
-                    cmd.show_usage()
-                return
+                print(cmd)
+                break
         else:
             print('Command not found')

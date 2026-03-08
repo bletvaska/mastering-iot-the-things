@@ -7,7 +7,7 @@ class Network(BaseCommand):
     name = 'net'
     description = 'Network interface management.'
     usage = (
-        ('net connect', 'Connect to network.'),
+        ('net connect <ssid> <password>', 'Connect to network.'),
         ('net disconnect', 'Disconnect from  network.'),
         ('net stat', 'Connection status.'),
         ('net deactivate', 'Deinitialize interface.'),
@@ -17,7 +17,7 @@ class Network(BaseCommand):
     def exec(self) -> None:
         if len(self.params) == 0:
             print('Error: Wrong Usage')
-            self.show_usage()
+            print(self)
             return
 
         wlan = self.context.wlan
@@ -42,7 +42,7 @@ class Network(BaseCommand):
         elif self.params[0] == 'connect':
             if len(self.params) != 3:
                 print("Error: Wrong Usage")
-                print(self.usage)
+                print(self)
                 return
 
             if not wlan.isconnected():
