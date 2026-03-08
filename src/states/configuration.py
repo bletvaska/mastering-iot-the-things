@@ -11,8 +11,6 @@ from .base import BaseState
 class Configuration(BaseState):
     name = "Configuration"
     def enter(self) -> None:
-        super().enter()
-
         self.context.diag_led.set_color(255, 165, 0)
 
     def exec(self):

@@ -14,7 +14,6 @@ class Publish(BaseState):
     name = "Publish"
 
     def enter(self) -> None:
-        super().enter()
         self.metrics = []
 
         with open(METRICS_FILE, 'r') as file:
@@ -49,5 +48,4 @@ class Publish(BaseState):
         return OTA(self.context)
 
     def exit(self) -> None:
-        super().exit()
         os.unlink(METRICS_FILE)

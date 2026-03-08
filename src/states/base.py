@@ -1,15 +1,16 @@
 class BaseState:
-    name: str = ""
+    name: str = None
 
     def __init__(self, context):
         self.context = context
-        self._name = self.name or self.__class__.__name__
+        if self.name is None:
+            self.name = self.__class__.__name__
 
     def enter(self) -> None:
-        print(f">> Entering {self._name}")
+        pass
 
     def exec(self):
         pass
 
     def exit(self) -> None:
-        print(f">> Leaving {self._name}")
+        pass

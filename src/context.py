@@ -28,10 +28,8 @@ class Context:
         self.settings: Settings = None
         self.mqtt_client = None
 
-    def change_state(self, state):
-        self.state = state
-
     def run(self):
+        print(f">> Entering {self.state.name}")
         self.state.enter()
         while True:
             next_state = self.state.exec()
@@ -40,6 +38,8 @@ class Context:
                 return
 
             if next_state is not self.state:
+                print(f">> Leaving {self.state.name}")
                 self.state.exit()
                 self.state = next_state
+                print(f">> Entering {self.state.name}")
                 self.state.enter()

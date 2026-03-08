@@ -14,8 +14,6 @@ class Init(BaseState):
     name = "Init"
 
     def enter(self) -> None:
-        super().enter()
-
         self.context.diag_led.set_color(0, 255, 0)
 
         # load settings
