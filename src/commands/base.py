@@ -1,7 +1,7 @@
 class BaseCommand():
     name: str
     description: str
-    usage: str = None
+    usage: tuple[str, str] = None
     params: list[str]
 
     def __init__(self, context):
