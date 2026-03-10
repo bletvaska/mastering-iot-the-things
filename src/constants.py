@@ -12,8 +12,9 @@ I2C_SCL_PIN = 5  # I2C clock line (SCL)
 RTC_ALARM_PIN = 2  # GPIO pin for RTC alarm signal
 
 # paths
-SETTINGS_FILE = '/settings.json'
-METRICS_FILE = '/metrics.csv'
+DATA_FOLDER = '/data'
+SETTINGS_FILE = f'{DATA_FOLDER}/settings.json'
+METRICS_FILE = f'{DATA_FOLDER}/metrics.csv'
 
 # durations
 SHORT_PRESS_DURATION = 2 * 1000

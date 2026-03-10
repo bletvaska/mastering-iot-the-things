@@ -1,9 +1,10 @@
 import binascii
 import json
+import pathlib
 import machine
 from time import sleep
 
-from constants import SETTINGS_FILE
+from constants import SETTINGS_FILE, DATA_FOLDER
 from models.settings import Settings
 from .base import BaseState
 
@@ -34,6 +35,7 @@ class Configuration(BaseState):
         settings.mqtt.topic_prefix = 'sub/sk/za/thsensor'
 
         # save default settings to file
+        pathlib.Path(DATA_FOLDER).mkdir(parents=True, exist_ok=True)
         data = settings.model_dump()
         with open(SETTINGS_FILE, 'w') as file:
             json.dump(data, file)
