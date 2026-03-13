@@ -1,0 +1,13 @@
+[project]
+name = "thsensor"
+version = "2026.1.1"
+description = "Simple smart sensor based on Raspberry Pi Pico 2 W written in MicroPython."
+readme = "readme.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "mpy-cross>=1.27.0.post2",
+    "pytest>=9.0.2",
+]
