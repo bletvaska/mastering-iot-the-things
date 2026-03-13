@@ -4,7 +4,8 @@ import pathlib
 import machine
 from time import sleep
 
-from constants import SETTINGS_FILE, DATA_FOLDER
+from constants import SETTINGS_FILE, SALT_FILE, DATA_FOLDER
+from crypto import create_salt, encrypt
 from models.settings import Settings
 from .base import BaseState
 
@@ -17,10 +18,13 @@ class Configuration(BaseState):
     def exec(self):
         print('>> Creating default settings.')
 
+        # create salt
+        create_salt(SALT_FILE)
+
         # create default settings
         settings = Settings()
         settings.wifi.ssid = 'hello.world'
-        settings.wifi.password = 'jahodka123'
+        settings.wifi.password = encrypt('jahodka123', SALT_FILE)
 
         uid = machine.unique_id()
         settings.device_id = binascii.hexlify(uid).decode()
@@ -30,7 +34,7 @@ class Configuration(BaseState):
         settings.mqtt.broker = 'greenhub.fei.tuke.sk'
         settings.mqtt.port = 8883
         settings.mqtt.username = 'riesitel'
-        settings.mqtt.password = '2VN1zAW0zyffPv'
+        settings.mqtt.password = encrypt('2VN1zAW0zyffPv', SALT_FILE)
         settings.mqtt.insecure = False
         settings.mqtt.topic_prefix = 'sub/sk/za/thsensor'
 

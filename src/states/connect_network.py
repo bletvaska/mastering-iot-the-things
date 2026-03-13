@@ -1,5 +1,7 @@
 from umqtt.simple import MQTTClient
 
+from constants import SALT_FILE
+from crypto import decrypt
 from .publish import Publish
 from .base import BaseState
 from helpers import do_connect
@@ -13,7 +15,7 @@ class ConnectNetwork(BaseState):
 
         # connect to wifi
         wifi = settings.wifi
-        do_connect(wifi.ssid, wifi.password)
+        do_connect(wifi.ssid, decrypt(wifi.password, SALT_FILE))
 
         # connect to mqtt
         mqtt = settings.mqtt
@@ -23,7 +25,7 @@ class ConnectNetwork(BaseState):
             mqtt.broker,
             port=mqtt.port,
             user=mqtt.username,
-            password=mqtt.password,
+            password=decrypt(mqtt.password, SALT_FILE),
             keepalive=10,
             ssl=not mqtt.insecure
         )

@@ -15,6 +15,7 @@ RTC_ALARM_PIN = 2  # GPIO pin for RTC alarm signal
 DATA_FOLDER = '/data'
 SETTINGS_FILE = f'{DATA_FOLDER}/settings.json'
 METRICS_FILE = f'{DATA_FOLDER}/metrics.csv'
+SALT_FILE = f'{DATA_FOLDER}/.salt'
 
 # durations
 SHORT_PRESS_DURATION = 2 * 1000
