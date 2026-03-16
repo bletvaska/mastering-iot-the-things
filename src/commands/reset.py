@@ -11,7 +11,7 @@ class Reset(BaseCommand):
         ('reset hard', 'Hard reset.'),
     )
 
-    def exec(self, params: list) -> None:
+    def __call__(self, params: list) -> None:
         if len(params) != 1 or params[0] not in ['soft', 'hard']:
             print('Wrong usage.')
             print(self)

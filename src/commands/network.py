@@ -14,7 +14,7 @@ class Network(BaseCommand):
         ('net scan', 'Scan networks.'),
     )
 
-    def exec(self, params: list) -> None:
+    def __call__(self, params: list) -> None:
         if len(params) == 0:
             print('Error: Wrong Usage')
             print(self)

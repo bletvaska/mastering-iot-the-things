@@ -6,7 +6,7 @@ class BaseCommand():
     def __init__(self, context):
         self.context = context
 
-    def exec(self, params: list):
+    def __call__(self, params: list):
         raise NotImplementedError()
 
     def __str__(self):

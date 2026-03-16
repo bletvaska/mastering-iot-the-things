@@ -13,7 +13,7 @@ class Settings(BaseCommand):
         ('settings get <key>', 'gets settings value'),
     )
 
-    def exec(self, params: list) -> None:
+    def __call__(self, params: list) -> None:
         if self.context.settings is None:
             print('No settings loaded.')
             return

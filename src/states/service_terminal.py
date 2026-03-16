@@ -48,6 +48,6 @@ class ServiceTerminal(BaseState):
                     print('Unknown command')
                 else:
                     cmd, params = result
-                    cmd.exec(params)
+                    cmd(params)
             except KeyboardInterrupt:
                 pass

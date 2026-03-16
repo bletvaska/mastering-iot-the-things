@@ -9,7 +9,7 @@ class Commands(BaseCommand):
         super().__init__(context)
         self.commands = commands
 
-    def exec(self, params: list) -> None:
+    def __call__(self, params: list) -> None:
         print('List of available commands:')
         for command in self.commands:
             print(f'  {command.name:10} {command.description}')

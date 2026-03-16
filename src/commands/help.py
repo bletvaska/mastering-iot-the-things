@@ -12,7 +12,7 @@ class Help(BaseCommand):
         super().__init__(context)
         self.commands = commands
 
-    def exec(self, params: list) -> None:
+    def __call__(self, params: list) -> None:
         if len(params) != 1:
             print('Wrong number of parameters.')
             print(self)
