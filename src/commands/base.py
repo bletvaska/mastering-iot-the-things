@@ -2,13 +2,11 @@ class BaseCommand():
     name: str
     description: str
     usage: tuple[str, str] = None
-    params: list[str]
 
     def __init__(self, context):
-        self.params = []
         self.context = context
 
-    def exec(self):
+    def exec(self, params: list):
         raise NotImplementedError()
 
     def __str__(self):

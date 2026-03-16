@@ -13,16 +13,16 @@ class Settings(BaseCommand):
         ('settings get <key>', 'gets settings value'),
     )
 
-    def exec(self) -> None:
+    def exec(self, params: list) -> None:
         if self.context.settings is None:
             print('No settings loaded.')
             return
 
-        if len(self.params) == 0:
+        if len(params) == 0:
             print(self)
             return
 
-        subcmd = self.params[0]
+        subcmd = params[0]
 
         if subcmd == 'show':
             settings = self.context.settings.model_dump()

@@ -25,8 +25,8 @@ class ServiceTerminal(BaseState):
         self.parser.register(Settings(self.context))
         self.parser.register(Reset(self.context))
         self.parser.register(Network(self.context))
-        self.parser.register(Commands(self.context, self.parser.commands))
-        self.parser.register(Help(self.context, self.parser.commands))
+        self.parser.register(Commands(self.context, self.parser))
+        self.parser.register(Help(self.context, self.parser))
 
         # inicializacia UART0 pre seriovú konzolu
         uart = UART(0, baudrate=115200, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)
@@ -43,10 +43,11 @@ class ServiceTerminal(BaseState):
                 if line == '':
                     continue
 
-                cmd = self.parser.parse(line)
-                if cmd is None:
+                result = self.parser.parse(line)
+                if result is None:
                     print('Unknown command')
                 else:
-                    cmd.exec()
+                    cmd, params = result
+                    cmd.exec(params)
             except KeyboardInterrupt:
                 pass

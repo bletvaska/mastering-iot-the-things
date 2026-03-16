@@ -6,5 +6,5 @@ class Version(BaseCommand):
     name = 'version'
     description = 'Show version'
 
-    def exec(self) -> None:
+    def exec(self, params: list) -> None:
         print(f'Version: {VERSION}')

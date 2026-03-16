@@ -12,14 +12,14 @@ class Help(BaseCommand):
         super().__init__(context)
         self.commands = commands
 
-    def exec(self) -> None:
-        if len(self.params) != 1:
+    def exec(self, params: list) -> None:
+        if len(params) != 1:
             print('Wrong number of parameters.')
             print(self)
             return
 
         for cmd in self.commands:
-            if cmd.name == self.params[0]:
+            if cmd.name == params[0]:
                 print(cmd)
                 break
         else:

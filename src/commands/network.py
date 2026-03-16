@@ -14,15 +14,15 @@ class Network(BaseCommand):
         ('net scan', 'Scan networks.'),
     )
 
-    def exec(self) -> None:
-        if len(self.params) == 0:
+    def exec(self, params: list) -> None:
+        if len(params) == 0:
             print('Error: Wrong Usage')
             print(self)
             return
 
         wlan = self.context.wlan
 
-        if self.params[0] == 'stat':
+        if params[0] == 'stat':
             if wlan.active() is False:
                 print('WLAN not activated.')
             else:
@@ -34,19 +34,19 @@ class Network(BaseCommand):
                 # print('password:', wlan.config('key'))
                 # print('hidden:', wlan.config('hidden'))
 
-        elif self.params[0] == 'scan':
+        elif params[0] == 'scan':
             wlan.active(True)
             for network in wlan.scan():
                 print(network[0].decode('utf-8'), network[2], network[4], network[5])
 
-        elif self.params[0] == 'connect':
-            if len(self.params) != 3:
+        elif params[0] == 'connect':
+            if len(params) != 3:
                 print("Error: Wrong Usage")
                 print(self)
                 return
 
             if not wlan.isconnected():
-                ssid, password = self.params[1:3]
+                ssid, password = params[1:3]
                 print(f'Connecting to {ssid}...')
 
                 wlan.active(True)
@@ -56,12 +56,12 @@ class Network(BaseCommand):
 
             print('network config:', wlan.ipconfig('addr4'))
 
-        elif self.params[0] == 'disconnect':
+        elif params[0] == 'disconnect':
             if wlan.isconnected():
                 print('Disconnecting from network...')
                 wlan.disconnect()
 
-        elif self.params[0] == 'deactivate':
+        elif params[0] == 'deactivate':
             if wlan.active():
                 print('Deactivating interface.')
                 wlan.active(False)
