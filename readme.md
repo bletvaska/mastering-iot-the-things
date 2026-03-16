@@ -21,6 +21,7 @@ You need following additional packages to install:
 >>> mip.install('github:DavesCodeMusings/BTHome-MicroPython')
 ```
 
+
 ## Links
 
 * [THSensor](https://github.com/bletvaska/mastering-iot-the-things) - project homepage at GitHub
