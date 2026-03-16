@@ -2,6 +2,8 @@
 
 This project contains source code for THSensor - smart temperature and humidity sensor written in MicroPython.
 
+![THSensor: Illustration](doc/images/thsensor-illustration.png)
+
 
 ## Additional Packages
 
