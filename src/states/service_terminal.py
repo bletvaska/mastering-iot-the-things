@@ -1,5 +1,6 @@
 import os
 
+from commands.devices import Devices
 from commands.help import Help
 from commands.commands import Commands
 from commands.network import Network
@@ -10,6 +11,7 @@ from commands.version import Version
 from machine import UART, Pin
 from parser import Parser
 from constants import UART_TX_PIN, UART_RX_PIN
+from hw.ws2812b import WS2812B
 from states.base import BaseState
 
 
@@ -17,10 +19,11 @@ class ServiceTerminal(BaseState):
     name = 'Service Terminal'
 
     def enter(self):
-        self.context.diag_led.set_color(5, 5, 5)
+        self.context.devices.get(WS2812B).set_color(5, 5, 5)
 
         self.parser = Parser()
         self.parser.register(Version(self.context))
+        self.parser.register(Devices(self.context))
         self.parser.register(Blink(self.context))
         self.parser.register(Settings(self.context))
         self.parser.register(Reset(self.context))
@@ -28,7 +31,7 @@ class ServiceTerminal(BaseState):
         self.parser.register(Commands(self.context, self.parser))
         self.parser.register(Help(self.context, self.parser))
 
-        # inicializacia UART0 pre seriovú konzolu
+        # initialization of UART0 for serial console
         uart = UART(0, baudrate=115200, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)
         os.dupterm(uart)
 

@@ -1,5 +1,6 @@
 from time import sleep
 
+from hw.ws2812b import WS2812B
 from .base import BaseCommand
 
 
@@ -8,7 +9,7 @@ class Blink(BaseCommand):
     description = 'Blinks the diagnostic LED'
 
     def __call__(self, params: list) -> None:
-        self.context.diag_led.toggle()
+        self.context.devices.get(WS2812B).toggle()
         sleep(2)
-        self.context.diag_led.toggle()
+        self.context.devices.get(WS2812B).toggle()
 

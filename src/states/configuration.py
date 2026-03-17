@@ -13,7 +13,8 @@ from .base import BaseState
 class Configuration(BaseState):
     name = "Configuration"
     def enter(self) -> None:
-        self.context.diag_led.set_color(255, 165, 0)
+        from hw.ws2812b import WS2812B
+        self.context.devices.get(WS2812B).set_color(255, 165, 0)
 
     def exec(self):
         print('>> Creating default settings.')

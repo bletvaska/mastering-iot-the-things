@@ -9,7 +9,8 @@ class Sleep(BaseState):
     name = "Sleep"
 
     def exec(self):
-        self.context.diag_led.off()
+        from hw.ws2812b import WS2812B
+        self.context.devices.get(WS2812B).off()
 
         # disconnect from mqtt
         self.context.mqtt_client.publish(

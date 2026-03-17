@@ -5,7 +5,8 @@ from machine import RTC
 
 from constants import METRICS_FILE
 from .connect_network import ConnectNetwork
-from hw.mixins.sensors.temperature import TemperatureUnit
+from hw.mixins.sensors.humidity import HumidityMixin
+from hw.mixins.sensors.temperature import TemperatureMixin, TemperatureUnit
 from .base import BaseState
 
 
@@ -15,12 +16,12 @@ class Measurement(BaseState):
     def exec(self):
         now = RTC().datetime()
 
-        temperature = self.context.temperature_sensor.temperature(unit=TemperatureUnit.METRIC)
+        temperature = self.context.devices.get(TemperatureMixin).temperature(unit=TemperatureUnit.METRIC)
         print(f'Current Temperature is {temperature}')
 
         sleep(1)
 
-        humidity = self.context.humidity_sensor.humidity()
+        humidity = self.context.devices.get(HumidityMixin).humidity()
         print(f'Current Humidity is {humidity}')
 
         with open(METRICS_FILE, "a") as file:

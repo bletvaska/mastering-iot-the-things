@@ -6,6 +6,7 @@ from .factory_reset import FactoryReset
 from .configuration import Configuration
 from .measurement import Measurement
 from .base import BaseState
+from hw.ws2812b import WS2812B
 from constants import SETTINGS_FILE, SHORT_PRESS_DURATION, LONG_PRESS_DURATION
 from models.settings import Settings
 
@@ -14,7 +15,7 @@ class Init(BaseState):
     name = "Init"
 
     def enter(self) -> None:
-        self.context.diag_led.set_color(0, 255, 0)
+        self.context.devices.get(WS2812B).set_color(0, 255, 0)
 
         # load settings
         try:
@@ -33,13 +34,13 @@ class Init(BaseState):
             while self.context.btn.value() == 0:
                 if ticks_ms() >= SHORT_PRESS_DURATION:
                     print('>> Short press duration')
-                    self.context.diag_led.set_color(255, 165, 0)
+                    self.context.devices.get(WS2812B).set_color(255, 165, 0)
                     break
 
             while self.context.btn.value() == 0:
                 if ticks_ms() >= LONG_PRESS_DURATION:
                     print('>> Long press duration')
-                    self.context.diag_led.set_color(128, 0, 128)
+                    self.context.devices.get(WS2812B).set_color(128, 0, 128)
                     break
 
             # wait for btn release
