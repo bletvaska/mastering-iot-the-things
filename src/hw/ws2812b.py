@@ -10,8 +10,8 @@ class WS2812B(OnOffMixin, ColorlightMixin, BaseDevice):
     name = 'WS2812B'
     description = 'RGB LED controller'
 
-    def __init__(self, pin: int, number: int):
-        BaseDevice.__init__(self)
+    def __init__(self, pin: int, number: int, alias=None):
+        BaseDevice.__init__(self, alias)
         self.pins = {'data': pin}
         self.np = NeoPixel(Pin(pin, Pin.OUT), number)
         self.color = (255, 255, 255)

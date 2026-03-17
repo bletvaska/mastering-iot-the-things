@@ -10,8 +10,8 @@ class DHT11(TemperatureMixin, HumidityMixin, BaseDevice):
     name = 'DHT11'
     description = 'Temperature and humidity sensor'
 
-    def __init__(self, pin: int):
-        BaseDevice.__init__(self)
+    def __init__(self, pin: int, alias=None):
+        BaseDevice.__init__(self, alias)
         self.pins = {'data': pin}
         pin = Pin(pin, Pin.IN)
         self.sensor = dht.DHT11(pin)

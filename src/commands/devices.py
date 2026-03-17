@@ -10,7 +10,10 @@ class Devices(BaseCommand):
             info = device.info()
             pins = ', '.join(f'{k}={v}' for k, v in info['pins'].items())
             capabilities = ', '.join(info['capabilities'])
-            print(f"{info['name']}")
+            title = f"{info['name']}"
+            if info['alias']:
+                title += f" ({info['alias']})"
+            print(title)
             print(f"  description : {info['description']}")
             print(f"  pins        : {pins}")
             print(f"  capabilities: {capabilities}")

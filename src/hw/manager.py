@@ -6,11 +6,20 @@ class DeviceManager:
         self._devices = []
 
     def register(self, device):
+        if device.alias:
+            for d in self._devices:
+                if d.alias == device.alias:
+                    raise ValueError(f'Device with alias "{device.alias}" already registered.')
         self._devices.append(device)
 
-    def get(self, device_type):
+    def get(self, device_type_or_alias):
+        if isinstance(device_type_or_alias, str):
+            for device in self._devices:
+                if device.alias == device_type_or_alias:
+                    return device
+            return None
         for device in self._devices:
-            if isinstance(device, device_type):
+            if isinstance(device, device_type_or_alias):
                 return device
         return None
 

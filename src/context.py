@@ -15,14 +15,14 @@ class Context:
         self.state = initial_state(self)
 
         self.devices = DeviceManager()
-        self.devices.register(WS2812B(DIAG_LED_PIN, 1))
+        self.devices.register(WS2812B(DIAG_LED_PIN, 1, alias='diag_led'))
         self.devices.register(DHT11(DHT_PIN))
         self.devices.register(DS3231(I2C_SDA_PIN, I2C_SCL_PIN, RTC_ALARM_PIN))
 
         self.btn = Pin(BTN_PIN, Pin.IN)
+        self.wlan = WLAN()
         self.terminal = Pin(SVC_PIN, Pin.IN, Pin.PULL_UP)
 
-        self.wlan = WLAN()
         self.settings: Settings = None
         self.mqtt_client = None
 
