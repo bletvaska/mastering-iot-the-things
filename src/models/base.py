@@ -27,12 +27,59 @@ class _Field:
 
 
 def Field(*, default=MISSING, default_factory=MISSING, type=None, optional=False):
+    """Define a model field with extended metadata.
+
+    Used as a class-level default in BaseModel subclasses to provide type
+    information, default values, and validation behaviour that cannot be
+    expressed with a plain assignment.
+
+    Args:
+        default: Default value for the field. Mutually exclusive with
+                 default_factory.
+        default_factory: A callable invoked on each instantiation to produce
+                         the default value. Use for mutable defaults such as
+                         lists or nested models.
+        type: Expected type or tuple of types for runtime type checking.
+              Required when the default is None and type inference is not
+              possible.
+        optional: If True, None is accepted as a valid value regardless of
+                  the declared type.
+
+    Raises:
+        ValueError: If both default and default_factory are provided.
+
+    Example:
+        class Settings(BaseModel):
+            broker: str = Field(default='localhost', type=str)
+            port: int = Field(default=1883, type=int)
+            tags: list = Field(default_factory=list)
+            token: str = Field(default=None, type=str, optional=True)
+            timeout: int = Field(type=int)  # required field
+    """
     if default is not MISSING and default_factory is not MISSING:
         raise ValueError('Cannot specify both default and default_factory.')
     return _Field(default, default_factory, type, optional)
 
 
-def validator(field):
+def validator(field: str):
+    """Decorator that registers a method as a field validator.
+
+    The decorated method is called after each assignment to the specified
+    field. It receives the model instance and the new value as arguments.
+    Raise an exception inside the validator to reject the value.
+
+    Args:
+        field: Name of the field to validate.
+
+    Example:
+        class Sensor(BaseModel):
+            temperature: float = 0.0
+
+            @validator('temperature')
+            def validate_temperature(self, value):
+                if value < -273.15:
+                    raise ValueError('Temperature below absolute zero.')
+    """
     def decorator(func):
         class CallableWrapper:
             def __init__(self, f):
@@ -49,6 +96,32 @@ def validator(field):
 
 
 class BaseModel:
+    """Lightweight data model base class for MicroPython.
+
+    Provides dataclass-like behaviour with runtime type checking, field
+    validation, and serialisation. Designed as a minimal alternative to
+    pydantic for use in resource-constrained environments.
+
+    Fields are declared as class-level attributes. Plain assignments infer
+    the type from the default value. Use Field() for advanced configuration
+    such as optional fields, explicit types, or mutable defaults.
+
+    Field metadata is built once per class via _build_fields(), called
+    automatically on first instantiation or via __init_subclass__ when
+    supported by the runtime.
+
+    Example:
+        class WiFi(BaseModel):
+            ssid: str = Field(default=None, type=str, optional=True)
+            password: str = Field(default=None, type=str, optional=True)
+
+        class Settings(BaseModel):
+            wifi: WiFi = Field(default_factory=WiFi, type=WiFi)
+            retries: int = 3
+
+        s = Settings(retries=5)
+        s.retries = 'x'  # raises ValueError
+    """
     @classmethod
     def _build_fields(cls):
         # already built for this specific class
