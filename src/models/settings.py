@@ -1,25 +1,25 @@
-from models.base import BaseModel
+from models.base import BaseModel, Field
 
 
 class WiFi(BaseModel):
-    ssid: str = None
-    password: str = None
+    ssid: str = Field(default=None, type=str, optional=True)
+    password: str = Field(default=None, type=str, optional=True)
 
 
 class MQTT(BaseModel):
-    broker: str = None
+    broker: str = Field(default=None, type=str, optional=True)
     port: int = 1883
-    username: str = None
-    password: str = None
+    username: str = Field(default=None, type=str, optional=True)
+    password: str = Field(default=None, type=str, optional=True)
     insecure: bool = True
-    topic_prefix: str = None
+    topic_prefix: str = Field(default=None, type=str, optional=True)
 
 
 class Settings(BaseModel):
-    wifi = WiFi()
-    mqtt = MQTT()
-    device_id: str = None
-    name: str = None
+    wifi: WiFi = Field(default_factory=WiFi, type=WiFi)
+    mqtt: MQTT = Field(default_factory=MQTT, type=MQTT)
+    device_id: str = Field(default=None, type=str, optional=True)
+    name: str = Field(default=None, type=str, optional=True)
 
     def base_topic(self):
         return f'{self.mqtt.topic_prefix}/{self.device_id}'

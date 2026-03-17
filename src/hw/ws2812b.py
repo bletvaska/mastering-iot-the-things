@@ -1,12 +1,18 @@
 from machine import Pin
 from neopixel import NeoPixel
 
+from hw.base import BaseDevice
 from hw.mixins.actuators.colorlight import ColorlightMixin
 from hw.mixins.actuators.onoff import OnOffMixin
 
 
-class WS2812B(OnOffMixin, ColorlightMixin):
-    def __init__(self, pin, number):
+class WS2812B(OnOffMixin, ColorlightMixin, BaseDevice):
+    name = 'WS2812B'
+    description = 'RGB LED controller'
+
+    def __init__(self, pin: int, number: int):
+        BaseDevice.__init__(self)
+        self.pins = {'data': pin}
         self.np = NeoPixel(Pin(pin, Pin.OUT), number)
         self.color = (255, 255, 255)
 
