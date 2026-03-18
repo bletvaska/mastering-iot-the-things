@@ -1,6 +1,7 @@
 from machine import Pin
 from network import WLAN
 
+from hw.cyw43439 import CYW43439
 from hw.dht11 import DHT11
 from hw.ds3231 import DS3231
 from hw.manager import DeviceManager
@@ -18,6 +19,7 @@ class Context:
         self.devices.register(WS2812B(DIAG_LED_PIN, 1, alias='diag_led'))
         self.devices.register(DHT11(DHT_PIN))
         self.devices.register(DS3231(I2C_SDA_PIN, I2C_SCL_PIN, RTC_ALARM_PIN))
+        self.devices.register(CYW43439(alias='wifi'))
 
         self.btn = Pin(BTN_PIN, Pin.IN)
         self.wlan = WLAN()
