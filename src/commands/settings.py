@@ -1,7 +1,6 @@
-import json
-
 from .base import BaseCommand
 from constants import SETTINGS_FILE
+from helpers import to_yaml
 
 
 class Settings(BaseCommand):
@@ -26,7 +25,7 @@ class Settings(BaseCommand):
 
         if subcmd == 'show':
             settings = self.context.settings.model_dump()
-            print(json.dumps(settings))
+            print(to_yaml(settings))
         else:
             print('Wrong usage.')
             print(self)
