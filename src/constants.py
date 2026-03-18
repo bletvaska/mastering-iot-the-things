@@ -19,6 +19,10 @@ SETTINGS_FILE = DATA_FOLDER / 'settings.json'
 METRICS_FILE = DATA_FOLDER / 'metrics.csv'
 SALT_FILE = DATA_FOLDER / '.salt'
 
+# device aliases
+ALIAS_WIFI = 'wifi'
+ALIAS_DIAG_LED = 'diag_led'
+
 # durations
 SHORT_PRESS_DURATION = 2 * 1000
 LONG_PRESS_DURATION = 6 * 1000

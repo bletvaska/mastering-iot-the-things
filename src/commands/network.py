@@ -1,6 +1,5 @@
-import machine
-
 from .base import BaseCommand
+from constants import ALIAS_WIFI
 
 
 class Network(BaseCommand):
@@ -20,7 +19,7 @@ class Network(BaseCommand):
             print(self)
             return
 
-        wlan = self.context.wlan
+        wlan = self.context.devices.get(ALIAS_WIFI)
 
         if params[0] == 'stat':
             if wlan.active() is False:
@@ -31,13 +30,11 @@ class Network(BaseCommand):
                 if wlan.isconnected():
                     print('network config:', wlan.ipconfig('addr4'))
                     print('ssid:', wlan.config('ssid'))
-                # print('password:', wlan.config('key'))
-                # print('hidden:', wlan.config('hidden'))
 
         elif params[0] == 'scan':
             wlan.active(True)
-            for network in wlan.scan():
-                print(network[0].decode('utf-8'), network[2], network[4], network[5])
+            for result in wlan.scan():
+                print(result[0].decode('utf-8'), result[2], result[4], result[5])
 
         elif params[0] == 'connect':
             if len(params) != 3:
@@ -45,16 +42,8 @@ class Network(BaseCommand):
                 print(self)
                 return
 
-            if not wlan.isconnected():
-                ssid, password = params[1:3]
-                print(f'Connecting to {ssid}...')
-
-                wlan.active(True)
-                wlan.connect(ssid, password)
-                while not wlan.isconnected():
-                    machine.idle()
-
-            print('network config:', wlan.ipconfig('addr4'))
+            ssid, password = params[1:3]
+            wlan.connect(ssid, password)
 
         elif params[0] == 'disconnect':
             if wlan.isconnected():
@@ -64,5 +53,4 @@ class Network(BaseCommand):
         elif params[0] == 'deactivate':
             if wlan.active():
                 print('Deactivating interface.')
-                wlan.active(False)
                 wlan.deinit()

@@ -1,4 +1,4 @@
-import os
+from os import dupterm
 
 from commands.devices import Devices
 from commands.help import Help
@@ -33,7 +33,7 @@ class ServiceTerminal(BaseState):
 
         # initialization of UART0 for serial console
         uart = UART(0, baudrate=115200, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)
-        os.dupterm(uart)
+        dupterm(uart)
 
     def exec(self):
         print('# Welcome to Service Terminal')

@@ -1,10 +1,11 @@
+import ntptime
+
 from umqtt.simple import MQTTClient
 
-from constants import SALT_FILE
+from constants import SALT_FILE, ALIAS_WIFI
 from crypto import decrypt
 from .publish import Publish
 from .base import BaseState
-from helpers import do_connect
 
 
 class ConnectNetwork(BaseState):
@@ -15,7 +16,8 @@ class ConnectNetwork(BaseState):
 
         # connect to wifi
         wifi = settings.wifi
-        do_connect(wifi.ssid, decrypt(wifi.password, SALT_FILE))
+        self.context.devices.get(ALIAS_WIFI).connect(wifi.ssid, decrypt(wifi.password, SALT_FILE))
+        ntptime.settime()
 
         # connect to mqtt
         mqtt = settings.mqtt

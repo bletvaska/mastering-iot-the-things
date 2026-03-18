@@ -1,7 +1,7 @@
 from time import sleep
 from machine import lightsleep
 
-
+from hw.cyw43439 import CYW43439
 from .base import BaseState
 
 
@@ -20,8 +20,10 @@ class Sleep(BaseState):
         )
         self.context.mqtt_client.disconnect()
 
-        self.context.wlan.disconnect()
-        self.context.wlan.deinit()
+        # shut down wifi
+        wlan = self.context.devices.get(CYW43439)
+        wlan.disconnect()
+        wlan.deinit()
 
         sleep(1)  # aby vsetci stihli spravit to, co treba
         # deepsleep()
