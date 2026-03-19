@@ -7,10 +7,11 @@ class Network(BaseCommand):
     description = 'Network interface management.'
     usage = (
         ('net connect <ssid> <password>', 'Connect to network.'),
-        ('net disconnect', 'Disconnect from  network.'),
+        ('net disconnect', 'Disconnect from network.'),
         ('net stat', 'Connection status.'),
-        ('net deactivate', 'Deinitialize interface.'),
+        ('net ping <host> [count]', 'Ping a host.'),
         ('net scan', 'Scan networks.'),
+        ('net deactivate', 'Deinitialize interface.'),
     )
 
     def __call__(self, params: list) -> None:
@@ -44,6 +45,21 @@ class Network(BaseCommand):
 
             ssid, password = params[1:3]
             wlan.connect(ssid, password)
+
+        elif params[0] == 'ping':
+            if len(params) < 2:
+                print("Error: Wrong Usage")
+                print(self)
+                return
+
+            if not wlan.isconnected():
+                print('Not connected.')
+                return
+
+            import uping
+            host = params[1]
+            count = int(params[2]) if len(params) == 3 else 4
+            uping.ping(host, count=count)
 
         elif params[0] == 'disconnect':
             if wlan.isconnected():

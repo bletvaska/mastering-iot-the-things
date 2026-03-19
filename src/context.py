@@ -14,6 +14,7 @@ class Context:
     def __init__(self, initial_state=Init):
         self.state = initial_state(self)
 
+        # initialize device manager and register all available devices
         self.devices = DeviceManager()
         self.devices.register(WS2812B(DIAG_LED_PIN, 1, alias=ALIAS_DIAG_LED))
         self.devices.register(DHT11(DHT_PIN))
@@ -23,7 +24,7 @@ class Context:
         self.btn = Pin(BTN_PIN, Pin.IN)
         self.terminal = Pin(SVC_PIN, Pin.IN, Pin.PULL_UP)
 
-        self.settings: Settings = None
+        self.settings: Settings | None = None
         self.mqtt_client = None
 
     def run(self):
