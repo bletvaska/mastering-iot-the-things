@@ -20,8 +20,11 @@ METRICS_FILE = DATA_FOLDER / 'metrics.csv'
 SALT_FILE = DATA_FOLDER / '.salt'
 
 # device aliases
-ALIAS_WIFI = 'wifi'
-ALIAS_DIAG_LED = 'diag_led'
+ALIAS_WIFI        = 'wifi'
+ALIAS_DIAG_LED    = 'diag_led'
+ALIAS_CONTROL_BTN = 'control_btn'
+ALIAS_SERVICE_BTN  = 'service_btn'
+ALIAS_POWER        = 'power'
 
 # durations
 SHORT_PRESS_DURATION = 2 * 1000

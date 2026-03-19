@@ -2,6 +2,7 @@ from os import dupterm
 from machine import UART, Pin
 
 from commands.blink import Blink
+from commands.power import Power
 from commands.commands import Commands
 from commands.devices import Devices
 from commands.help import Help
@@ -27,6 +28,7 @@ class ServiceTerminal(BaseState):
         self.context.parser.register(Devices(self.context))
         self.context.parser.register(Help(self.context))
         self.context.parser.register(Network(self.context))
+        self.context.parser.register(Power(self.context))
         self.context.parser.register(Reset(self.context))
         self.context.parser.register(Settings(self.context))
         self.context.parser.register(SysInfo(self.context))
@@ -41,7 +43,7 @@ class ServiceTerminal(BaseState):
         print('# Welcome to Service Terminal')
 
         while True:
-            try:
+            # try:
                 line = input('> ').strip()
 
                 if line == '':
@@ -54,5 +56,5 @@ class ServiceTerminal(BaseState):
                     cmd, params = result
                     cmd(params)
                     print()
-            except KeyboardInterrupt:
-                pass
+            # except KeyboardInterrupt:
+            #     pass
