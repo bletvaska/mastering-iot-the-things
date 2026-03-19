@@ -20,53 +20,79 @@ class Network(BaseCommand):
             print(self)
             return
 
-        wlan = self.context.devices.get(ALIAS_WIFI)
+        dispatch = {
+            'stat': self._stat,
+            'scan': self._scan,
+            'connect': self._connect,
+            'ping': self._ping,
+            'disconnect': self._disconnect,
+            'deactivate': self._deactivate,
+        }
 
-        if params[0] == 'stat':
-            if wlan.active() is False:
-                print('WLAN not activated.')
-            else:
-                print('WLAN is active.')
-                print('Connected:', wlan.isconnected())
-                if wlan.isconnected():
-                    print('network config:', wlan.ipconfig('addr4'))
-                    print('ssid:', wlan.config('ssid'))
+        handler = dispatch.get(params[0])
+        if handler:
+            handler(self.context.devices.get(ALIAS_WIFI), params[1:])
+        else:
+            print("Error: Wrong Usage")
+            print(self)
 
-        elif params[0] == 'scan':
-            wlan.active(True)
-            for result in wlan.scan():
-                print(result[0].decode('utf-8'), result[2], result[4], result[5])
+    def _deactivate(self, wlan, params):
+        if wlan.active():
+            print('Deactivating interface.')
+            wlan.deinit()
 
-        elif params[0] == 'connect':
-            if len(params) != 3:
-                print("Error: Wrong Usage")
-                print(self)
-                return
+    def _disconnect(self, wlan, params):
+        if wlan.isconnected():
+            print('Disconnecting from network...')
+            wlan.disconnect()
 
-            ssid, password = params[1:3]
-            wlan.connect(ssid, password)
-
-        elif params[0] == 'ping':
-            if len(params) < 2:
-                print("Error: Wrong Usage")
-                print(self)
-                return
-
-            if not wlan.isconnected():
-                print('Not connected.')
-                return
-
-            import uping
-            host = params[1]
-            count = int(params[2]) if len(params) == 3 else 4
-            uping.ping(host, count=count)
-
-        elif params[0] == 'disconnect':
+    def _stat(self, wlan, params):
+        if wlan.active() is False:
+            print('WLAN not activated.')
+        else:
+            print('WLAN is active.')
+            print('Connected:', wlan.isconnected())
             if wlan.isconnected():
-                print('Disconnecting from network...')
-                wlan.disconnect()
+                print('network config:', wlan.ipconfig('addr4'))
+                print('ssid:', wlan.config('ssid'))
 
-        elif params[0] == 'deactivate':
-            if wlan.active():
-                print('Deactivating interface.')
-                wlan.deinit()
+    def _scan(self, wlan, params):
+        security_names = {0: 'open', 1: 'WEP', 2: 'WPA-PSK', 3: 'WPA2-PSK', 4: 'WPA/WPA2-PSK'}
+
+        wlan.active(True)
+        results = wlan.scan()
+
+        print(f"{'SSID':<32}  {'CH':>3}  {'RSSI':>5}  {'SECURITY':<13}  HIDDEN")
+        print(f"{'-' * 32}  {'-' * 3}  {'-' * 5}  {'-' * 13}  {'-' * 6}")
+        for result in results:
+            ssid = result[0].decode('utf-8')
+            channel = result[2]
+            rssi = result[3]
+            security = security_names.get(result[4], str(result[4]))
+            hidden = 'yes' if result[5] else 'no'
+            print(f"{ssid:<32}  {channel:>3}  {rssi:>5}  {security:<13}  {hidden}")
+
+    def _connect(self, wlan, params):
+        if len(params) != 2:
+            print("Error: Wrong Usage")
+            print(self)
+            return
+
+        ssid, password = params
+        wlan.connect(ssid, password)
+
+    def _ping(self, wlan, params):
+        if 1 > len(params) > 2:
+            print("Error: Wrong Usage")
+            print(self)
+            return
+
+        if not wlan.isconnected():
+            print('Not connected.')
+            return
+
+        import uping
+
+        host = params[0]
+        count = int(params[1]) if len(params) == 2 else 4
+        uping.ping(host, count=count)

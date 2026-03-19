@@ -2,4 +2,5 @@
 .venv/
 uv.lock
 src/lib/
+__pycache__/
 
