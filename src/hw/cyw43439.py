@@ -32,12 +32,9 @@ class CYW43439(BaseDevice, NetworkMixin, WiFiMixin):
         self._wlan.active(True)
 
         if not self._wlan.isconnected():
-            print(f'Connecting to network {ssid}...')
             self._wlan.connect(ssid, key, bssid=bssid)
             while not self._wlan.isconnected():
                 idle()
-
-        print('network config:', self._wlan.ipconfig('addr4'))
 
     def disconnect(self):
         self._wlan.disconnect()

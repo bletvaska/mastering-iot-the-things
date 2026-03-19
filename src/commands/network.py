@@ -14,13 +14,10 @@ class Network(BaseCommand):
         ('net deactivate', 'Deinitialize interface.'),
     )
 
-    def __call__(self, params: list) -> None:
-        if len(params) == 0:
-            print('Error: Wrong Usage')
-            print(self)
-            return
+    def __init__(self, context):
+        super().__init__(context)
 
-        dispatch = {
+        self.dispatch = {
             'stat': self._stat,
             'scan': self._scan,
             'connect': self._connect,
@@ -29,7 +26,13 @@ class Network(BaseCommand):
             'deactivate': self._deactivate,
         }
 
-        handler = dispatch.get(params[0])
+    def __call__(self, params: list) -> None:
+        if len(params) == 0:
+            print('Error: Wrong Usage')
+            print(self)
+            return
+
+        handler = self.dispatch.get(params[0])
         if handler:
             handler(self.context.devices.get(ALIAS_WIFI), params[1:])
         else:
@@ -47,14 +50,34 @@ class Network(BaseCommand):
             wlan.disconnect()
 
     def _stat(self, wlan, params):
-        if wlan.active() is False:
-            print('WLAN not activated.')
-        else:
-            print('WLAN is active.')
-            print('Connected:', wlan.isconnected())
-            if wlan.isconnected():
-                print('network config:', wlan.ipconfig('addr4'))
-                print('ssid:', wlan.config('ssid'))
+        status_names = {
+            0:  'idle',
+            1:  'connecting',
+            3:  'connected',
+            -1: 'connection failed',
+            -2: 'no AP found',
+            -3: 'wrong password',
+        }
+
+        active = wlan.active()
+        status = status_names.get(wlan.status(), str(wlan.status()))
+        mac    = ':'.join('%02x' % b for b in wlan.config('mac'))
+
+        print(f"{'Active':<10}: {'yes' if active else 'no'}")
+        print(f"{'Status':<10}: {status}")
+        print(f"{'MAC':<10}: {mac}")
+
+        if active and wlan.isconnected():
+            import network
+            rssi = wlan.status('rssi')
+            print(f"{'SSID':<10}: {wlan.config('ssid')}")
+            print(f"{'Channel':<10}: {wlan.config('channel')}")
+            print(f"{'RSSI':<10}: {rssi} dBm")
+            ip, mask = wlan.ipconfig('addr4')
+            print(f"{'IP':<10}: {ip}")
+            print(f"{'Mask':<10}: {mask}")
+            print(f"{'Gateway':<10}: {wlan.ipconfig('gw4')}")
+            print(f"{'DNS':<10}: {network.ipconfig('dns')}")
 
     def _scan(self, wlan, params):
         security_names = {0: 'open', 1: 'WEP', 2: 'WPA-PSK', 3: 'WPA2-PSK', 4: 'WPA/WPA2-PSK'}
@@ -79,7 +102,16 @@ class Network(BaseCommand):
             return
 
         ssid, password = params
+        print(f'Connecting to {ssid}...')
         wlan.connect(ssid, password)
+
+        import network
+        ip, mask = wlan.ipconfig('addr4')
+        print(f"{'SSID':<10}: {wlan.config('ssid')}")
+        print(f"{'IP':<10}: {ip}")
+        print(f"{'Mask':<10}: {mask}")
+        print(f"{'Gateway':<10}: {wlan.ipconfig('gw4')}")
+        print(f"{'DNS':<10}: {network.ipconfig('dns')}")
 
     def _ping(self, wlan, params):
         if 1 > len(params) > 2:
@@ -91,7 +123,7 @@ class Network(BaseCommand):
             print('Not connected.')
             return
 
-        import uping
+        import lib.uping as uping
 
         host = params[0]
         count = int(params[1]) if len(params) == 2 else 4
