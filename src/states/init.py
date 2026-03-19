@@ -1,4 +1,4 @@
-from time import ticks_ms
+from time import ticks_ms, ticks_diff
 
 from .service_terminal import ServiceTerminal
 from .factory_reset import FactoryReset
@@ -29,13 +29,13 @@ class Init(BaseState):
         if self.context.btn.value() == 0:
 
             while self.context.btn.value() == 0:
-                if ticks_ms() >= SHORT_PRESS_DURATION:
+                if ticks_diff(ticks_ms(), self.context.started_at) >= SHORT_PRESS_DURATION:
                     print('>> Short press duration')
                     self.context.devices.get(WS2812B).set_color(255, 165, 0)
                     break
 
             while self.context.btn.value() == 0:
-                if ticks_ms() >= LONG_PRESS_DURATION:
+                if ticks_diff(ticks_ms(), self.context.started_at) >= LONG_PRESS_DURATION:
                     print('>> Long press duration')
                     self.context.devices.get(WS2812B).set_color(128, 0, 128)
                     break
@@ -44,10 +44,10 @@ class Init(BaseState):
             while self.context.btn.value() == 0:
                 pass
 
-            if ticks_ms() >= LONG_PRESS_DURATION:
+            if ticks_diff(ticks_ms(), self.context.started_at) >= LONG_PRESS_DURATION:
                 return FactoryReset(self.context)
 
-            if ticks_ms() >= SHORT_PRESS_DURATION:
+            if ticks_diff(ticks_ms(), self.context.started_at) >= SHORT_PRESS_DURATION:
                 return Configuration(self.context)
 
         if self.context.settings is None:

@@ -1,4 +1,3 @@
-import os
 import machine
 
 from constants import SETTINGS_FILE
@@ -10,7 +9,7 @@ class FactoryReset(BaseState):
 
     def exec(self):
         try:
-            os.remove(SETTINGS_FILE)
+            SETTINGS_FILE.unlink(True)
         except OSError as e:
             print(f'>> Could not remove settings file: {e}')
         machine.reset()

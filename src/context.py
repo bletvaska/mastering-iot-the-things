@@ -1,4 +1,5 @@
 from machine import Pin
+from time import ticks_ms
 
 from hw.cyw43439 import CYW43439
 from hw.dht11 import DHT11
@@ -21,6 +22,7 @@ class Context:
         self.devices.register(DS3231(I2C_SDA_PIN, I2C_SCL_PIN, RTC_ALARM_PIN))
         self.devices.register(CYW43439(alias=ALIAS_WIFI))
 
+        self.started_at = ticks_ms()
         self.btn = Pin(BTN_PIN, Pin.IN)
         self.terminal = Pin(SVC_PIN, Pin.IN, Pin.PULL_UP)
 

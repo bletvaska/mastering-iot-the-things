@@ -8,6 +8,7 @@ from commands.reset import Reset
 from commands.blink import Blink
 from commands.settings import Settings
 from commands.version import Version
+from commands.uptime import Uptime
 from machine import UART, Pin
 from parser import Parser
 from constants import UART_TX_PIN, UART_RX_PIN
@@ -23,6 +24,7 @@ class ServiceTerminal(BaseState):
 
         self.parser = Parser()
         self.parser.register(Version(self.context))
+        self.parser.register(Uptime(self.context))
         self.parser.register(Devices(self.context))
         self.parser.register(Blink(self.context))
         self.parser.register(Settings(self.context))
