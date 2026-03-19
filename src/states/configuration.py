@@ -1,5 +1,4 @@
 import binascii
-import json
 import pathlib
 import machine
 from time import sleep
@@ -39,11 +38,13 @@ class Configuration(BaseState):
         settings.mqtt.insecure = False
         settings.mqtt.topic_prefix = 'sub/sk/za/thsensor'
 
+        # user admin
+        settings.admin.username = 'admin'
+        settings.admin.password = encrypt('admin', SALT_FILE)
+
         # save default settings to file
         pathlib.Path(DATA_FOLDER).mkdir(parents=True, exist_ok=True)
-        data = settings.model_dump()
-        with open(SETTINGS_FILE, 'w') as file:
-            json.dump(data, file)
+        settings.save(SETTINGS_FILE)
 
         # reset
         sleep(5)

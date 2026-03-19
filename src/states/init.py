@@ -1,4 +1,3 @@
-import json
 from time import ticks_ms
 
 from .service_terminal import ServiceTerminal
@@ -8,7 +7,7 @@ from .measurement import Measurement
 from .base import BaseState
 from hw.ws2812b import WS2812B
 from constants import SETTINGS_FILE, SHORT_PRESS_DURATION, LONG_PRESS_DURATION
-from models.settings import Settings
+from helpers import get_settings
 
 
 class Init(BaseState):
@@ -19,9 +18,7 @@ class Init(BaseState):
 
         # load settings
         try:
-            with open(SETTINGS_FILE, 'r') as file:
-                data = json.load(file)
-                self.context.settings = Settings(**data)
+            self.context.settings = get_settings()
         except OSError:
             print('>> Missing settings file.')
 

@@ -1,3 +1,5 @@
+import json
+
 from models.base import BaseModel, Field
 
 
@@ -16,8 +18,8 @@ class MQTT(BaseModel):
 
 
 class Admin(BaseModel):
-    username: str = Field(default=None, type=str)
-    password: str = Field(default=None, type=str)
+    username: str = Field(default=None, type=str, optional=True)
+    password: str = Field(default=None, type=str, optional=True)
 
 
 class Settings(BaseModel):
@@ -29,3 +31,7 @@ class Settings(BaseModel):
 
     def base_topic(self):
         return f'{self.mqtt.topic_prefix}/{self.device_id}'
+
+    def save(self, path) -> None:
+        with open(path, 'w') as file:
+            json.dump(self.model_dump(), file)

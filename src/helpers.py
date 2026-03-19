@@ -1,14 +1,12 @@
 import json
 
 from constants import SETTINGS_FILE
-
 from models.settings import Settings
 
 
 def get_settings() -> Settings:
     with open(SETTINGS_FILE, 'r') as file:
-        settings = json.load(file)
-        return Settings(**settings)
+        return Settings(**json.load(file))
 
 
 def to_yaml(data: dict, indent: int = 0) -> str:
