@@ -3,6 +3,7 @@ from machine import UART, Pin
 
 from commands.blink import Blink
 from commands.power import Power
+from commands.rtc import RTC
 from commands.commands import Commands
 from commands.devices import Devices
 from commands.help import Help
@@ -32,6 +33,7 @@ class ServiceTerminal(BaseState):
         self.context.parser.register(Reset(self.context))
         self.context.parser.register(Settings(self.context))
         self.context.parser.register(SysInfo(self.context))
+        self.context.parser.register(RTC(self.context))
         self.context.parser.register(Uptime(self.context))
         self.context.parser.register(Version(self.context))
 

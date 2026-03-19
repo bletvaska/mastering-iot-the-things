@@ -25,6 +25,7 @@ ALIAS_DIAG_LED    = 'diag_led'
 ALIAS_CONTROL_BTN = 'control_btn'
 ALIAS_SERVICE_BTN  = 'service_btn'
 ALIAS_POWER        = 'power'
+ALIAS_RTC          = 'rtc'
 
 # durations
 SHORT_PRESS_DURATION = 2 * 1000
