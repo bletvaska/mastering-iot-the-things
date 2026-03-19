@@ -15,9 +15,15 @@ class MQTT(BaseModel):
     topic_prefix: str = Field(default=None, type=str, optional=True)
 
 
+class Admin(BaseModel):
+    username: str = Field(default=None, type=str)
+    password: str = Field(default=None, type=str)
+
+
 class Settings(BaseModel):
     wifi: WiFi = Field(default_factory=WiFi, type=WiFi)
     mqtt: MQTT = Field(default_factory=MQTT, type=MQTT)
+    admin: Admin = Field(default_factory=Admin, type=Admin)
     device_id: str = Field(default=None, type=str, optional=True)
     name: str = Field(default=None, type=str, optional=True)
 
