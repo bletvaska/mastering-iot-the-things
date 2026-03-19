@@ -8,17 +8,13 @@ class Help(BaseCommand):
         ('help <cmd>', 'Shows usage for a given command.'),
     )
 
-    def __init__(self, context, commands):
-        super().__init__(context)
-        self.commands = commands
-
     def __call__(self, params: list) -> None:
         if len(params) != 1:
             print('Wrong number of parameters.')
             print(self)
             return
 
-        for cmd in self.commands:
+        for cmd in self.context.parser:
             if cmd.name == params[0]:
                 print(cmd)
                 break

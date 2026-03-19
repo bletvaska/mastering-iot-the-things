@@ -1,17 +1,16 @@
 from os import dupterm
+from machine import UART, Pin
 
+from commands.blink import Blink
+from commands.commands import Commands
 from commands.devices import Devices
 from commands.help import Help
-from commands.commands import Commands
 from commands.network import Network
 from commands.reset import Reset
-from commands.blink import Blink
 from commands.settings import Settings
-from commands.version import Version
 from commands.sysinfo import SysInfo
 from commands.uptime import Uptime
-from machine import UART, Pin
-from parser import Parser
+from commands.version import Version
 from constants import UART_TX_PIN, UART_RX_PIN
 from hw.ws2812b import WS2812B
 from states.base import BaseState
@@ -23,17 +22,16 @@ class ServiceTerminal(BaseState):
     def enter(self):
         self.context.devices.get(WS2812B).set_color(5, 5, 5)
 
-        self.parser = Parser()
-        self.parser.register(Blink(self.context))
-        self.parser.register(Commands(self.context, self.parser))
-        self.parser.register(Devices(self.context))
-        self.parser.register(Help(self.context, self.parser))
-        self.parser.register(Network(self.context))
-        self.parser.register(Reset(self.context))
-        self.parser.register(Settings(self.context))
-        self.parser.register(SysInfo(self.context))
-        self.parser.register(Uptime(self.context))
-        self.parser.register(Version(self.context))
+        self.context.parser.register(Blink(self.context))
+        self.context.parser.register(Commands(self.context))
+        self.context.parser.register(Devices(self.context))
+        self.context.parser.register(Help(self.context))
+        self.context.parser.register(Network(self.context))
+        self.context.parser.register(Reset(self.context))
+        self.context.parser.register(Settings(self.context))
+        self.context.parser.register(SysInfo(self.context))
+        self.context.parser.register(Uptime(self.context))
+        self.context.parser.register(Version(self.context))
 
         # initialization of UART0 for serial console
         uart = UART(0, baudrate=115200, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)
@@ -46,11 +44,10 @@ class ServiceTerminal(BaseState):
             try:
                 line = input('> ').strip()
 
-                # empty line?
                 if line == '':
                     continue
 
-                result = self.parser.parse(line)
+                result = self.context.parser.parse(line)
                 if result is None:
                     print('Unknown command')
                 else:

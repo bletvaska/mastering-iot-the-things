@@ -8,6 +8,7 @@ from hw.manager import DeviceManager
 from hw.ws2812b import WS2812B
 from constants import DIAG_LED_PIN, BTN_PIN, DHT_PIN, SVC_PIN, I2C_SDA_PIN, I2C_SCL_PIN, RTC_ALARM_PIN, ALIAS_WIFI, ALIAS_DIAG_LED
 from models.settings import Settings
+from parser import Parser
 from states.init import Init
 
 
@@ -22,10 +23,11 @@ class Context:
         self.devices.register(DS3231(I2C_SDA_PIN, I2C_SCL_PIN, RTC_ALARM_PIN))
         self.devices.register(CYW43439(alias=ALIAS_WIFI))
 
-        self.started_at = ticks_ms()
         self.btn = Pin(BTN_PIN, Pin.IN)
         self.terminal = Pin(SVC_PIN, Pin.IN, Pin.PULL_UP)
 
+        self.started_at = ticks_ms()
+        self.parser = Parser()
         self.settings: Settings | None = None
         self.mqtt_client = None
 
