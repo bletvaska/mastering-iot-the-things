@@ -8,6 +8,7 @@ from commands.reset import Reset
 from commands.blink import Blink
 from commands.settings import Settings
 from commands.version import Version
+from commands.sysinfo import SysInfo
 from commands.uptime import Uptime
 from machine import UART, Pin
 from parser import Parser
@@ -23,15 +24,16 @@ class ServiceTerminal(BaseState):
         self.context.devices.get(WS2812B).set_color(5, 5, 5)
 
         self.parser = Parser()
-        self.parser.register(Version(self.context))
-        self.parser.register(Uptime(self.context))
-        self.parser.register(Devices(self.context))
         self.parser.register(Blink(self.context))
-        self.parser.register(Settings(self.context))
-        self.parser.register(Reset(self.context))
-        self.parser.register(Network(self.context))
         self.parser.register(Commands(self.context, self.parser))
+        self.parser.register(Devices(self.context))
         self.parser.register(Help(self.context, self.parser))
+        self.parser.register(Network(self.context))
+        self.parser.register(Reset(self.context))
+        self.parser.register(Settings(self.context))
+        self.parser.register(SysInfo(self.context))
+        self.parser.register(Uptime(self.context))
+        self.parser.register(Version(self.context))
 
         # initialization of UART0 for serial console
         uart = UART(0, baudrate=115200, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)
@@ -54,5 +56,6 @@ class ServiceTerminal(BaseState):
                 else:
                     cmd, params = result
                     cmd(params)
+                    print()
             except KeyboardInterrupt:
                 pass
