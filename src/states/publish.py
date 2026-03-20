@@ -48,4 +48,4 @@ class Publish(BaseState):
         return OTA(self.context)
 
     def exit(self) -> None:
-        os.unlink(METRICS_FILE)
+        METRICS_FILE.unlink(missing_ok=True)

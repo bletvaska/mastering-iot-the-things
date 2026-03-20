@@ -4,5 +4,5 @@ class TemperatureUnit:
     METRIC: str = 'metric'
 
 class TemperatureMixin:
-    def temperature(self, units=TemperatureUnit.METRIC) -> float:
+    def temperature(self, unit=TemperatureUnit.METRIC) -> float:
         raise NotImplementedError

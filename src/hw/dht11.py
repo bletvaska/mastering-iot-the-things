@@ -1,3 +1,4 @@
+import time
 from machine import Pin
 import dht
 
@@ -15,20 +16,28 @@ class DHT11(TemperatureMixin, HumidityMixin, BaseDevice):
         self.pins = {'data': pin}
         pin = Pin(pin, Pin.IN)
         self.sensor = dht.DHT11(pin)
+        self._last_measurement = None
 
-    def temperature(self, units=TemperatureUnit.METRIC) -> float:
-        self.sensor.measure()
+    def _measure(self):
+        if self._last_measurement is None or time.ticks_diff(time.ticks_ms(), self._last_measurement) >= 1000:
+            self.sensor.measure()
+            self._last_measurement = time.ticks_ms()
+            print(self._last_measurement)
+
+
+    def temperature(self, unit=TemperatureUnit.METRIC) -> float:
+        self._measure()
         value = self.sensor.temperature()
 
-        if units == TemperatureUnit.IMPERIAL:
+        if unit == TemperatureUnit.IMPERIAL:
             return (value * 9 / 5) + 32
-        elif units == TemperatureUnit.STANDARD:
+        elif unit == TemperatureUnit.STANDARD:
             return value + 273.15
-        elif units == TemperatureUnit.METRIC:
+        elif unit == TemperatureUnit.METRIC:
             return value
 
-        raise ValueError(f'Invalid temperature unit: {units}')
+        raise ValueError(f'Invalid temperature unit: {unit}')
 
     def humidity(self) -> int:
-        self.sensor.measure()
+        self._measure()
         return self.sensor.humidity()
