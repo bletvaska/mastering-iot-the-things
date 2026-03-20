@@ -27,11 +27,17 @@ class BaseDevice:
     def __init__(self, alias=None):
         """
         Args:
-            alias: Optional unique identifier for this device instance.
-                   Used to retrieve the device from DeviceManager by name.
+            alias: Optional identifier(s) for this device instance.
+                   May be a string or a list of strings. Used to retrieve
+                   the device from DeviceManager by name.
         """
         self.pins = {}
-        self.alias = alias
+        if alias is None:
+            self.aliases = []
+        elif isinstance(alias, str):
+            self.aliases = [alias]
+        else:
+            self.aliases = list(alias)
 
     def capabilities(self) -> list:
         """Return a list of capability mixin names this device implements.
@@ -67,7 +73,7 @@ class BaseDevice:
         """
         return {
             'name': self.name,
-            'alias': self.alias,
+            'aliases': self.aliases,
             'description': self.description,
             'pins': self.pins,
             'capabilities': self.capabilities(),

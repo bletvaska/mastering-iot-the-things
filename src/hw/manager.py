@@ -31,10 +31,10 @@ class DeviceManager:
         Raises:
             ValueError: If a device with the same alias is already registered.
         """
-        if device.alias:
-            for d in self._devices:
-                if d.alias == device.alias:
-                    raise ValueError(f'Device with alias "{device.alias}" already registered.')
+        existing_aliases = {a for d in self._devices for a in d.aliases}
+        for alias in device.aliases:
+            if alias in existing_aliases:
+                raise ValueError(f'Device with alias "{alias}" already registered.')
         self._devices.append(device)
 
     def get(self, device_type_or_alias):
@@ -48,7 +48,7 @@ class DeviceManager:
         """
         if isinstance(device_type_or_alias, str):
             for device in self._devices:
-                if device.alias == device_type_or_alias:
+                if device_type_or_alias in device.aliases:
                     return device
             return None
         for device in self._devices:
