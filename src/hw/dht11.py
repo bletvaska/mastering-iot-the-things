@@ -6,6 +6,8 @@ from hw.base import BaseDevice
 from hw.mixins.sensors.humidity import HumidityMixin
 from hw.mixins.sensors.temperature import TemperatureMixin, TemperatureUnit
 
+_MEASUREMENT_INTERVAL_MS = 2000
+
 
 class DHT11(TemperatureMixin, HumidityMixin, BaseDevice):
     name = 'DHT11'
@@ -19,11 +21,10 @@ class DHT11(TemperatureMixin, HumidityMixin, BaseDevice):
         self._last_measurement = None
 
     def _measure(self):
-        if self._last_measurement is None or time.ticks_diff(time.ticks_ms(), self._last_measurement) >= 1000:
+        if self._last_measurement is None or time.ticks_diff(time.ticks_ms(),
+                                                             self._last_measurement) >= _MEASUREMENT_INTERVAL_MS:
             self.sensor.measure()
             self._last_measurement = time.ticks_ms()
-            print(self._last_measurement)
-
 
     def temperature(self, unit=TemperatureUnit.METRIC) -> float:
         self._measure()
