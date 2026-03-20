@@ -3,7 +3,8 @@ from time import ticks_ms
 from hw.button import Button
 from hw.cyw43439 import CYW43439
 from hw.power_monitor import PowerMonitor
-from hw.dht11 import DHT11
+# from hw.dht11 import DHT11
+from hw.dht22 import DHT22
 from hw.ds3231 import DS3231
 from hw.manager import DeviceManager
 from hw.ws2812b import WS2812B
@@ -20,7 +21,7 @@ class Context:
         # initialize device manager and register all available devices
         self.devices = DeviceManager()
         self.devices.register(WS2812B(DIAG_LED_PIN, 1, alias=ALIAS_DIAG_LED))
-        self.devices.register(DHT11(DHT_PIN, alias=[ALIAS_TEMP, ALIAS_HUMIDITY]))
+        self.devices.register(DHT22(DHT_PIN, alias=[ALIAS_TEMP, ALIAS_HUMIDITY]))
         self.devices.register(DS3231(I2C_SDA_PIN, I2C_SCL_PIN, RTC_ALARM_PIN, alias=ALIAS_RTC))
         self.devices.register(CYW43439(alias=ALIAS_WIFI))
         self.devices.register(Button(BTN_PIN, alias=ALIAS_CONTROL_BTN))

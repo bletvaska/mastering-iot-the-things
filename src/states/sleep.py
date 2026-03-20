@@ -2,7 +2,6 @@ from time import sleep
 from machine import lightsleep
 
 from constants import ALIAS_WIFI
-from hw.cyw43439 import CYW43439
 from .base import BaseState
 
 

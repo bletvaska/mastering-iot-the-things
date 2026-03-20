@@ -1,12 +1,11 @@
 import json
-import os
 from machine import RTC
 
-from states.ota import OTA
+from .ota import OTA
+from .base import BaseState
 from constants import METRICS_FILE
 from models.message import Message
 from models.metric import Metric
-from .base import BaseState
 from helpers import to_iso8601
 
 

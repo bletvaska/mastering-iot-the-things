@@ -18,6 +18,9 @@ class Configuration(BaseState):
     def exec(self):
         print('>> Creating default settings.')
 
+        # create data folder if doesnt exist
+        DATA_FOLDER.mkdir(parents=True, exist_ok=True)
+
         # create salt
         create_salt(SALT_FILE)
 

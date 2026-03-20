@@ -1,12 +1,8 @@
 from time import ticks_ms, ticks_diff
 
-from .service_terminal import ServiceTerminal
-from .factory_reset import FactoryReset
-from .configuration import Configuration
-from .measurement import Measurement
 from .base import BaseState
 from hw.ws2812b import WS2812B
-from constants import SETTINGS_FILE, SHORT_PRESS_DURATION, LONG_PRESS_DURATION, ALIAS_CONTROL_BTN, ALIAS_SERVICE_BTN
+from constants import SHORT_PRESS_DURATION, LONG_PRESS_DURATION, ALIAS_CONTROL_BTN, ALIAS_SERVICE_BTN
 from helpers import get_settings
 
 
@@ -23,10 +19,11 @@ class Init(BaseState):
             print('>> Missing settings file.')
 
     def exec(self):
-        svc_btn  = self.context.devices.get(ALIAS_SERVICE_BTN)
+        svc_btn = self.context.devices.get(ALIAS_SERVICE_BTN)
         ctrl_btn = self.context.devices.get(ALIAS_CONTROL_BTN)
 
         if svc_btn.is_pressed():
+            from .service_terminal import ServiceTerminal
             return ServiceTerminal(self.context)
 
         if ctrl_btn.is_pressed():
@@ -48,12 +45,17 @@ class Init(BaseState):
                 pass
 
             if ticks_diff(ticks_ms(), self.context.started_at) >= LONG_PRESS_DURATION:
+                from .factory_reset import FactoryReset
                 return FactoryReset(self.context)
 
             if ticks_diff(ticks_ms(), self.context.started_at) >= SHORT_PRESS_DURATION:
+                from .configuration import Configuration
                 return Configuration(self.context)
 
         if self.context.settings is None:
+            from .configuration import Configuration
             return Configuration(self.context)
 
-        return Measurement(self.context)
+        from .service_terminal import ServiceTerminal
+        return ServiceTerminal(self.context)
+        # return Measurement(self.context)

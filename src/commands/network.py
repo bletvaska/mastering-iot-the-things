@@ -14,8 +14,10 @@ class Network(BaseCommand):
         ('net deactivate', 'Deinitialize interface.'),
     )
 
-    def __init__(self, context):
-        super().__init__(context)
+    def __call__(self, params: list) -> None:
+        if len(params) == 0:
+            print(self)
+            return
 
         self.dispatch = {
             'stat': self._stat,
@@ -25,11 +27,6 @@ class Network(BaseCommand):
             'disconnect': self._disconnect,
             'deactivate': self._deactivate,
         }
-
-    def __call__(self, params: list) -> None:
-        if len(params) == 0:
-            print(self)
-            return
 
         handler = self.dispatch.get(params[0])
         if handler:
@@ -50,9 +47,9 @@ class Network(BaseCommand):
 
     def _stat(self, wlan, params):
         status_names = {
-            0:  'idle',
-            1:  'connecting',
-            3:  'connected',
+            0: 'idle',
+            1: 'connecting',
+            3: 'connected',
             -1: 'connection failed',
             -2: 'no AP found',
             -3: 'wrong password',
@@ -60,7 +57,7 @@ class Network(BaseCommand):
 
         active = wlan.active()
         status = status_names.get(wlan.status(), str(wlan.status()))
-        mac    = ':'.join('%02x' % b for b in wlan.config('mac'))
+        mac = ':'.join('%02x' % b for b in wlan.config('mac'))
 
         print(f"{'Active':<10}: {'yes' if active else 'no'}")
         print(f"{'Status':<10}: {status}")

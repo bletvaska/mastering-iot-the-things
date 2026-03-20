@@ -1,13 +1,11 @@
 from time import sleep
 
 from helpers import to_iso8601
-from machine import RTC
 
 from constants import METRICS_FILE, ALIAS_RTC, ALIAS_TEMP, ALIAS_HUMIDITY
 from .connect_network import ConnectNetwork
-from hw.mixins.sensors.humidity import HumidityMixin
-from hw.mixins.sensors.temperature import TemperatureMixin, TemperatureUnit
 from .base import BaseState
+from hw.mixins.sensors.temperature import TemperatureUnit
 
 
 class Measurement(BaseState):
