@@ -21,6 +21,10 @@ You need following additional packages to install:
 
 # BT Home support
 >>> mip.install('github:DavesCodeMusings/BTHome-MicroPython')
+
+# Microdoct - The impossibly small web framework (with utemplate)
+>>> mip.install('github:miguelgrinberg/microdot/src/microdot/microdot.py')
+>>> mip.install('github:miguelgrinberg/microdot/src/microdot/utemplate.py')
 ```
 
 
