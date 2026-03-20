@@ -1,18 +1,7 @@
 from os import dupterm
 from machine import UART, Pin
 
-from commands.blink import Blink
-from commands.power import Power
-from commands.rtc import RTC
-from commands.commands import Commands
-from commands.devices import Devices
-from commands.help import Help
-from commands.network import Network
-from commands.reset import Reset
-from commands.settings import Settings
-from commands.sysinfo import SysInfo
-from commands.uptime import Uptime
-from commands.version import Version
+from commands import Blink, Power, RTC, Commands, Devices, Help, Network, Reset, Settings, SysInfo, Uptime, Version
 from constants import UART_TX_PIN, UART_RX_PIN
 from hw.ws2812b import WS2812B
 from states.base import BaseState
@@ -46,17 +35,17 @@ class ServiceTerminal(BaseState):
 
         while True:
             # try:
-                line = input('> ').strip()
+            line = input('> ').strip()
 
-                if line == '':
-                    continue
+            if line == '':
+                continue
 
-                result = self.context.parser.parse(line)
-                if result is None:
-                    print('Unknown command')
-                else:
-                    cmd, params = result
-                    cmd(params)
-                    print()
-            # except KeyboardInterrupt:
-            #     pass
+            result = self.context.parser.parse(line)
+            if result is None:
+                print('Unknown command')
+            else:
+                cmd, params = result
+                cmd(params)
+                print()
+        # except KeyboardInterrupt:
+        #     pass
