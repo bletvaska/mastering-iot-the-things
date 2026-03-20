@@ -113,7 +113,7 @@ class Network(BaseCommand):
         print(f"{'DNS':<10}: {network.ipconfig('dns')}")
 
     def _ping(self, wlan, params):
-        if 1 > len(params) > 2:
+        if not (1 <= len(params) <= 2):
             print("Error: Wrong Usage")
             print(self)
             return

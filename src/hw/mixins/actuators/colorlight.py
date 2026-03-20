@@ -5,8 +5,5 @@ class Color:
 
 
 class ColorlightMixin:
-    def set_color(self, r, g, b):
-        raise NotImplementedError
-
-    def color(self):
+    def color(self, value=None):
         raise NotImplementedError

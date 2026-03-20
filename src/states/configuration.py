@@ -13,7 +13,7 @@ class Configuration(BaseState):
     name = "Configuration"
     def enter(self) -> None:
         from hw.ws2812b import WS2812B
-        self.context.devices.get(WS2812B).set_color(255, 165, 0)
+        self.context.devices.get(WS2812B).color((255, 165, 0))
 
     def exec(self):
         print('>> Creating default settings.')

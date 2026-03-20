@@ -11,7 +11,7 @@ class ServiceTerminal(BaseState):
     name = 'Service Terminal'
 
     def enter(self):
-        self.context.devices.get(WS2812B).set_color(5, 5, 5)
+        self.context.devices.get(WS2812B).color((5, 5, 5))
 
         self.context.parser.register(Blink(self.context))
         self.context.parser.register(Commands(self.context))

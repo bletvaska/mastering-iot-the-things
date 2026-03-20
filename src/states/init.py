@@ -14,7 +14,7 @@ class Init(BaseState):
     name = "Init"
 
     def enter(self) -> None:
-        self.context.devices.get(WS2812B).set_color(0, 255, 0)
+        self.context.devices.get(WS2812B).color((0, 255, 0))
 
         # load settings
         try:
@@ -34,13 +34,13 @@ class Init(BaseState):
             while ctrl_btn.is_pressed():
                 if ticks_diff(ticks_ms(), self.context.started_at) >= SHORT_PRESS_DURATION:
                     print('>> Short press duration')
-                    self.context.devices.get(WS2812B).set_color(255, 165, 0)
+                    self.context.devices.get(WS2812B).color((255, 165, 0))
                     break
 
             while ctrl_btn.is_pressed():
                 if ticks_diff(ticks_ms(), self.context.started_at) >= LONG_PRESS_DURATION:
                     print('>> Long press duration')
-                    self.context.devices.get(WS2812B).set_color(128, 0, 128)
+                    self.context.devices.get(WS2812B).color((128, 0, 128))
                     break
 
             # wait for btn release

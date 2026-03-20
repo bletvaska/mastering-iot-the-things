@@ -16,18 +16,18 @@ class DHT11(TemperatureMixin, HumidityMixin, BaseDevice):
         pin = Pin(pin, Pin.IN)
         self.sensor = dht.DHT11(pin)
 
-    def temperature(self, unit=TemperatureUnit.STANDARD) -> float:
+    def temperature(self, units=TemperatureUnit.METRIC) -> float:
         self.sensor.measure()
         value = self.sensor.temperature()
 
-        if unit == TemperatureUnit.IMPERIAL:
+        if units == TemperatureUnit.IMPERIAL:
             return (value * 9 / 5) + 32
-        elif unit == TemperatureUnit.STANDARD:
-            return value - 273
-        elif unit == TemperatureUnit.METRIC:
+        elif units == TemperatureUnit.STANDARD:
+            return value + 273.15
+        elif units == TemperatureUnit.METRIC:
             return value
 
-        raise ValueError(f'Invalid temperature unit: {unit}')
+        raise ValueError(f'Invalid temperature unit: {units}')
 
     def humidity(self) -> int:
         self.sensor.measure()
