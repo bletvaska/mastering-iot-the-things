@@ -43,10 +43,56 @@ class Settings(BaseCommand):
             print(self)
 
     def _get(self, params: list):
-        pass
+        if len(params) != 1:
+            print('Error: Wrong Usage')
+            print(self)
+            return
+
+        data = self.context.settings.model_dump()
+        for key in params[0].split('.'):
+            if not isinstance(data, dict) or key not in data:
+                print(f'Error: Key "{params[0]}" not found.')
+                return
+            data = data[key]
+
+        print(to_yaml(data) if isinstance(data, dict) else data)
 
     def _set(self, params: list):
-        pass
+        if len(params) != 2:
+            print('Error: Wrong Usage')
+            print(self)
+            return
+
+        path, value = params
+        keys = path.split('.')
+
+        obj = self.context.settings
+        for key in keys[:-1]:
+            if not hasattr(obj, key):
+                print(f'Error: Key "{path}" not found.')
+                return
+            obj = getattr(obj, key)
+
+        last_key = keys[-1]
+        if not hasattr(obj, last_key):
+            print(f'Error: Key "{path}" not found.')
+            return
+
+        current = getattr(obj, last_key)
+
+        if not isinstance(current, (str, int, float, bool, type(None))):
+            print(f'Error: "{path}" is a section, not a value.')
+            return
+
+        if isinstance(current, bool):
+            value = value.lower() in ('true', '1', 'yes')
+        elif isinstance(current, int):
+            value = int(value)
+        elif isinstance(current, float):
+            value = float(value)
+
+        setattr(obj, last_key, value)
+        print(f'{path} = {getattr(obj, last_key)}')
 
     def _show(self, params: list):
         print(to_yaml(self.context.settings.model_dump()))
