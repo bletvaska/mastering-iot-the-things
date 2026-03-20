@@ -19,11 +19,11 @@ class DS3231(ClockMixin, AlarmMixin, BaseDevice):
 
     def datetime(self, dt=None):
         if dt is None:
-            year, month, day, hour, min, sec, dow, _ = self._rtc.get_time()
-            return year, month, day, dow, hour, min, sec, 0
+            year, month, day, hour, minute, sec, dow, _ = self._rtc.get_time()
+            return year, month, day, dow, hour, minute, sec, 0
 
-        year, month, day, dow, hour, min, sec, _ = dt
-        self._rtc.set_time((year, month, day, hour, min, sec, dow, 0))
+        year, month, day, dow, hour, minute, sec, _ = dt
+        self._rtc.set_time((year, month, day, hour, minute, sec, dow, 0))
 
     def set_alarm(
             self,

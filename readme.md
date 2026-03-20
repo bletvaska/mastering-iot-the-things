@@ -10,7 +10,7 @@ This project contains source code for THSensor - smart temperature and humidity 
 You need following additional packages to install:
 
 ```python
-# for better handling of filesystem
+# for better handling of filesystem/file operations
 >>> mip.install('pathlib')
 
 # for MQTT support

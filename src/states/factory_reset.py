@@ -8,8 +8,5 @@ class FactoryReset(BaseState):
     name = "Factory Reset"
 
     def exec(self):
-        try:
-            SETTINGS_FILE.unlink(True)
-        except OSError as e:
-            print(f'>> Could not remove settings file: {e}')
+        SETTINGS_FILE.unlink(missing_ok=True)
         machine.reset()
