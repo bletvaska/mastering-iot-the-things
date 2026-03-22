@@ -1,5 +1,6 @@
 from time import ticks_ms
 
+from exceptions import THSensorException
 from hw.button import Button
 from hw.cyw43439 import CYW43439
 from hw.power_monitor import PowerMonitor
@@ -11,6 +12,7 @@ from hw.ws2812b import WS2812B
 from constants import DIAG_LED_PIN, BTN_PIN, DHT_PIN, SVC_PIN, I2C_SDA_PIN, I2C_SCL_PIN, RTC_ALARM_PIN, ALIAS_WIFI, ALIAS_DIAG_LED, ALIAS_CONTROL_BTN, ALIAS_SERVICE_BTN, ALIAS_POWER, ALIAS_RTC, ALIAS_TEMP, ALIAS_HUMIDITY
 from models.settings import Settings
 from parser import Parser
+from states.error import Error
 from states.init import Init
 
 
@@ -37,7 +39,11 @@ class Context:
         print(f">> Entering {self.state.name}")
         self.state.enter()
         while True:
-            next_state = self.state.exec()
+            try:
+                next_state = self.state.exec()
+            except THSensorException as ex:
+                print(ex)
+                next_state = Error(self, ex)
 
             if next_state is None:
                 return

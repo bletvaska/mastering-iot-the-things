@@ -1,9 +1,15 @@
+import time
+
 import network
 from machine import idle
 
+from exceptions import NetworkError
 from hw.base import BaseDevice
 from hw.mixins.network.network import NetworkMixin
 from hw.mixins.network.wifi import WiFiMixin
+
+MAX_ATTEMPTS = 3
+TIMEOUT = 10
 
 
 class CYW43439(BaseDevice, NetworkMixin, WiFiMixin):
@@ -30,11 +36,41 @@ class CYW43439(BaseDevice, NetworkMixin, WiFiMixin):
 
     def connect(self, ssid=None, key=None, *, bssid=None):
         self._wlan.active(True)
+        attempt = 0
 
-        if not self._wlan.isconnected():
+        while attempt < MAX_ATTEMPTS:
+            self._wlan.disconnect()
             self._wlan.connect(ssid, key, bssid=bssid)
+
+            attempt += 1
+            start = time.ticks_ms()
+
             while not self._wlan.isconnected():
+                status = self._wlan.status()
+
+                # immediate checks
+                if status == network.STAT_WRONG_PASSWORD:
+                    raise NetworkError("Wrong password")
+
+                if status == network.STAT_NO_AP_FOUND:
+                    raise NetworkError("AP not found")
+
+                if status == network.STAT_CONNECT_FAIL:
+                    break  # retry
+
+                # timeout of single attempt
+                if time.ticks_diff(time.ticks_ms(), start) > TIMEOUT * 1000:
+                    break
+
+                # time.sleep(0.2)
                 idle()
+            else:
+                return
+
+            # backoff
+            time.sleep(min(2 ** attempt, 10))
+
+        raise NetworkError("Failed to connect")
 
     def disconnect(self):
         self._wlan.disconnect()

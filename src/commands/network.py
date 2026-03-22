@@ -1,3 +1,4 @@
+from exceptions import NetworkError
 from .base import BaseCommand
 from constants import ALIAS_WIFI
 
@@ -99,15 +100,19 @@ class Network(BaseCommand):
 
         ssid, password = params
         print(f'Connecting to {ssid}...')
-        wlan.connect(ssid, password)
 
-        import network
-        ip, mask = wlan.ipconfig('addr4')
-        print(f"{'SSID':<10}: {wlan.config('ssid')}")
-        print(f"{'IP':<10}: {ip}")
-        print(f"{'Mask':<10}: {mask}")
-        print(f"{'Gateway':<10}: {wlan.ipconfig('gw4')}")
-        print(f"{'DNS':<10}: {network.ipconfig('dns')}")
+        try:
+            wlan.connect(ssid, password)
+
+            import network
+            ip, mask = wlan.ipconfig('addr4')
+            print(f"{'SSID':<10}: {wlan.config('ssid')}")
+            print(f"{'IP':<10}: {ip}")
+            print(f"{'Mask':<10}: {mask}")
+            print(f"{'Gateway':<10}: {wlan.ipconfig('gw4')}")
+            print(f"{'DNS':<10}: {network.ipconfig('dns')}")
+        except NetworkError as ex:
+            print(f'Network Error: {ex}')
 
     def _ping(self, wlan, params):
         if not (1 <= len(params) <= 2):

@@ -13,12 +13,13 @@ class Sleep(BaseState):
         self.context.devices.get(WS2812B).off()
 
         # disconnect from mqtt
-        self.context.mqtt_client.publish(
-            f'{self.context.settings.base_topic()}/status',
-            '{"status": "offline", "owner": "mirek"}',
-            retain=True
-        )
-        self.context.mqtt_client.disconnect()
+        if self.context.mqtt_client.is_connected():
+            self.context.mqtt_client.publish(
+                f'{self.context.settings.base_topic()}/status',
+                '{"status": "offline", "owner": "mirek"}',
+                retain=True
+            )
+            self.context.mqtt_client.disconnect()
 
         # shut down wifi
         wlan = self.context.devices.get(ALIAS_WIFI)
