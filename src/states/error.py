@@ -10,6 +10,6 @@ class Error(BaseState):
         self.exception = exception
 
     def exec(self):
-        print('Houston, we hare problem.')
+        print('Houston, we have problem.')
 
         return Sleep(self.context)

@@ -42,7 +42,8 @@ class Context:
             try:
                 next_state = self.state.exec()
             except THSensorException as ex:
-                print(ex)
+                if isinstance(self.state, Error):
+                    return  # no handling on error, just quit
                 next_state = Error(self, ex)
 
             if next_state is None:

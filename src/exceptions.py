@@ -10,5 +10,5 @@ class DeviceError(THSensorException):
     pass
 
 
-class Error(THSensorException):
+class MQTTError(THSensorException):
     pass

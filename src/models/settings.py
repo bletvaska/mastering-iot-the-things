@@ -6,6 +6,8 @@ from models.base import BaseModel, Field
 class WiFi(BaseModel):
     ssid: str = Field(default=None, type=str, optional=True)
     password: str = Field(default=None, type=str, optional=True)
+    timeout: int = Field(default=10, type=int)
+    max_attempts: int = Field(default=3, type=int)
 
 
 class MQTT(BaseModel):
