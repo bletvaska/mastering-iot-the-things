@@ -49,6 +49,18 @@ class Configuration(BaseState):
         pathlib.Path(DATA_FOLDER).mkdir(parents=True, exist_ok=True)
         settings.save(SETTINGS_FILE)
 
+
+        # # create AP mode
+        # ap = network.WLAN(network.AP_IF)
+        # ap.config(ssid=SENSOR_SSID, key=SENSOR_WIFI_PASSWORD)
+        # ap.active(True)
+        # print(ap.ifconfig())
+        #
+        # # start the web app
+        # from web.routes import app
+        # app.run(port=80)
+
+
         # reset
         sleep(5)
         machine.reset()
