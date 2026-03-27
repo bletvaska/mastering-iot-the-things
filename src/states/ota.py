@@ -35,8 +35,8 @@ class OTA(BaseState):
         elif topic.endswith('/settings'):
             self._handle_settings(topic, message)
 
-    def _handle_settings(self, topic: bytes, message: bytes):
+    def _handle_settings(self, topic: str, message: dict):
         print('handling settings')
 
-    def _handle_cmd(self, topic: bytes, message: bytes):
+    def _handle_cmd(self, topic: str, message: dict):
         print('handling command')

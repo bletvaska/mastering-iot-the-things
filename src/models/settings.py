@@ -1,4 +1,7 @@
+import binascii
 import json
+
+import machine
 
 from models.base import BaseModel, Field
 
@@ -28,7 +31,7 @@ class Settings(BaseModel):
     wifi: WiFi = Field(default_factory=WiFi, type=WiFi)
     mqtt: MQTT = Field(default_factory=MQTT, type=MQTT)
     admin: Admin = Field(default_factory=Admin, type=Admin)
-    device_id: str = Field(default=None, type=str, optional=True)
+    device_id: str = Field(default=binascii.hexlify(machine.unique_id()).decode(), type=str)
     name: str = Field(default=None, type=str, optional=True)
 
     def base_topic(self):

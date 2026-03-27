@@ -1,6 +1,6 @@
-from models.settings import Settings
 from .base import BaseCommand
-from constants import SETTINGS_FILE
+from constants import SETTINGS_FILE, SALT_FILE
+from crypto import encrypt
 from helpers import to_yaml, get_settings
 
 
@@ -11,6 +11,7 @@ class Settings(BaseCommand):
         ('settings show', 'shows user settings'),
         ('settings set <key> <value>', 'sets settings key'),
         ('settings get <key>', 'gets settings value'),
+        ('settings passwd <key> <value>', 'sets and encrypts a password field'),
         ('settings save', 'save settings'),
         ('settings load', 'load settings'),
     )
@@ -22,6 +23,7 @@ class Settings(BaseCommand):
             'show': self._show,
             'get': self._get,
             'set': self._set,
+            'passwd': self._passwd,
             'load': self._load,
             'save': self._save,
         }
@@ -93,6 +95,35 @@ class Settings(BaseCommand):
 
         setattr(obj, last_key, value)
         print(f'{path} = {getattr(obj, last_key)}')
+
+    # FIXME
+    def _passwd(self, params: list):
+        if len(params) != 2:
+            print('Error: Wrong Usage')
+            print(self)
+            return
+
+        path, plaintext = params
+        keys = path.split('.')
+
+        if keys[-1] != 'password':
+            print(f'Error: "{path}" is not a password field.')
+            return
+
+        obj = self.context.settings
+        for key in keys[:-1]:
+            if not hasattr(obj, key):
+                print(f'Error: Key "{path}" not found.')
+                return
+            obj = getattr(obj, key)
+
+        if not hasattr(obj, 'password'):
+            print(f'Error: Key "{path}" not found.')
+            return
+
+        print(f'>{plaintext}<')
+        setattr(obj, 'password', encrypt(plaintext, SALT_FILE))
+        print(f'Password in {path} has been updated.')
 
     def _show(self, params: list):
         print(to_yaml(self.context.settings.model_dump()))

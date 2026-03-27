@@ -1,5 +1,3 @@
-from time import sleep
-
 from helpers import to_iso8601
 
 from constants import METRICS_FILE, ALIAS_RTC, ALIAS_TEMP, ALIAS_HUMIDITY

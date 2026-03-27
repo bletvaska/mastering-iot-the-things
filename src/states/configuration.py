@@ -26,13 +26,13 @@ class Configuration(BaseState):
 
         # create default settings
         settings = Settings()
-        # settings.wifi.ssid = 'hello.world'
-        # settings.wifi.password = encrypt('jahodka123', SALT_FILE)
-        settings.wifi.ssid = 'chalupka'
-        settings.wifi.password = encrypt('u.nas.doma', SALT_FILE)
 
-        uid = machine.unique_id()
-        settings.device_id = binascii.hexlify(uid).decode()
+        settings.wifi.ssid = 'hello.world'
+        settings.wifi.password = encrypt('jahodka123', SALT_FILE)
+
+        # uid = machine.unique_id()
+        # settings.device_id = binascii.hexlify(uid).decode()
+        settings.device_id = 'mirek'
         settings.name = 'THSensor'
 
         # mqtt configuration

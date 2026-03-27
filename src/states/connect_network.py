@@ -16,6 +16,7 @@ class ConnectNetwork(BaseState):
         settings = self.context.settings
 
         # connect to wifi
+        print(f'... Connecting to network "{settings.wifi.ssid}"')
         wifi = self.context.devices.get(ALIAS_WIFI)
         wifi.connect(settings.wifi.ssid, decrypt(settings.wifi.password, SALT_FILE))
 
@@ -27,7 +28,7 @@ class ConnectNetwork(BaseState):
             rtc.datetime(RTC().datetime())
         except OSError as ex:
             # FIXME ako to spravne osetrit?
-            print(f'Error: {ex}')
+            print(f'NTP Sync Error: {ex}')
 
         # connect to mqtt
         mqtt = settings.mqtt
