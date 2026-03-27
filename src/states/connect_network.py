@@ -20,9 +20,14 @@ class ConnectNetwork(BaseState):
         wifi.connect(settings.wifi.ssid, decrypt(settings.wifi.password, SALT_FILE))
 
         # sync time
-        ntptime.settime()
-        rtc = self.context.devices.get(ALIAS_RTC)
-        rtc.datetime(RTC().datetime())
+        try:
+            # FIXME do nastaveni pridat konfiguraciu pre ntphost
+            ntptime.settime()
+            rtc = self.context.devices.get(ALIAS_RTC)
+            rtc.datetime(RTC().datetime())
+        except OSError as ex:
+            # FIXME ako to spravne osetrit?
+            print(f'Error: {ex}')
 
         # connect to mqtt
         mqtt = settings.mqtt

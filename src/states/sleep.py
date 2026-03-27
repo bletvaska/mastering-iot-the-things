@@ -13,7 +13,8 @@ class Sleep(BaseState):
         self.context.devices.get(WS2812B).off()
 
         # disconnect from mqtt
-        if self.context.mqtt_client.is_connected():
+        # FIXME co ak klient nie je pripojeny? nema metodu na overenie stavu spojenia. treba overit v tomto momente, lebo spojenie sa moze prerusit. zrejme len try-except
+        if self.context.mqtt_client is not None:
             self.context.mqtt_client.publish(
                 f'{self.context.settings.base_topic()}/status',
                 '{"status": "offline", "owner": "mirek"}',

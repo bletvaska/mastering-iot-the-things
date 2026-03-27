@@ -56,6 +56,5 @@ class Init(BaseState):
             from .configuration import Configuration
             return Configuration(self.context)
 
-        from .service_terminal import ServiceTerminal
-        return ServiceTerminal(self.context)
-        # return Measurement(self.context)
+        from .measurement import Measurement
+        return Measurement(self.context)
