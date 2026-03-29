@@ -31,6 +31,7 @@ class Sleep(BaseState):
 
         # deepsleep()
         lightsleep(10 * 1000)
+
         from states.measurement import Measurement
         return Measurement(self.context)
         # return None

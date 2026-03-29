@@ -1,6 +1,8 @@
 from helpers import to_iso8601
 
 from constants import METRICS_FILE, ALIAS_RTC, ALIAS_TEMP, ALIAS_HUMIDITY
+from hw.mixins.sensors.humidity import HumidityMixin
+from .advertisement import Advertisement
 from .connect_network import ConnectNetwork
 from .base import BaseState
 from hw.mixins.sensors.temperature import TemperatureUnit
@@ -16,10 +18,11 @@ class Measurement(BaseState):
         temperature = self.context.devices.get(ALIAS_TEMP).temperature(unit=TemperatureUnit.METRIC)
         print(f'Current Temperature is {temperature}')
 
-        humidity = self.context.devices.get(ALIAS_HUMIDITY).humidity()
+        humidity: HumidityMixin = self.context.devices.get(ALIAS_HUMIDITY).humidity()
         print(f'Current Humidity is {humidity}')
 
         with open(METRICS_FILE, "a") as file:
             print(f'{to_iso8601(now)};{temperature};{TemperatureUnit.METRIC};{humidity}', file=file)
 
+        return Advertisement(self.context)
         return ConnectNetwork(self.context)

@@ -1,7 +1,7 @@
 from machine import Pin
 
 from hw.base import BaseDevice
-from hw.mixins.sensors.button import ButtonMixin
+from hw.mixins.inputs.button import ButtonMixin
 
 
 class Button(ButtonMixin, BaseDevice):
