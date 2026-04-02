@@ -1,7 +1,7 @@
 from os import dupterm
 from machine import UART, Pin
 
-from commands import Blink, I2C, Power, RTC, Commands, Devices, Help, Network, Reset, Settings, SysInfo, Uptime, Version
+from commands import Blink, I2C, Measurements, Power, RTC, Commands, Devices, Help, Network, Reset, Settings, SysInfo, Uptime, Version
 from constants import UART_TX_PIN, UART_RX_PIN
 from hw.ws2812b import WS2812B
 from .base import BaseState
@@ -18,6 +18,7 @@ class ServiceTerminal(BaseState):
         self.context.parser.register(Devices(self.context))
         self.context.parser.register(Help(self.context))
         self.context.parser.register(I2C(self.context))
+        self.context.parser.register(Measurements(self.context))
         self.context.parser.register(Network(self.context))
         self.context.parser.register(Power(self.context))
         self.context.parser.register(Reset(self.context))

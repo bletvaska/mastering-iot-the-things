@@ -1,4 +1,5 @@
 from .blink import Blink
+from .measurements import Measurements
 from .i2c import I2C
 from .commands import Commands
 from .devices import Devices
