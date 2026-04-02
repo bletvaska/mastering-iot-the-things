@@ -27,10 +27,15 @@ class Admin(BaseModel):
     password: str = Field(default=None, type=str, optional=True)
 
 
+class NTP(BaseModel):
+    server: str = 'pool.ntp.org'
+
+
 class Settings(BaseModel):
     wifi: WiFi = Field(default_factory=WiFi, type=WiFi)
     mqtt: MQTT = Field(default_factory=MQTT, type=MQTT)
     admin: Admin = Field(default_factory=Admin, type=Admin)
+    ntp: NTP = Field(default_factory=NTP, type=NTP)
     device_id: str = Field(default=binascii.hexlify(machine.unique_id()).decode(), type=str)
     name: str = Field(default=None, type=str, optional=True)
 

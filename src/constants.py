@@ -4,7 +4,7 @@ from pathlib import Path
 DHT_PIN = 3
 BTN_PIN = 20
 DIAG_LED_PIN = 18
-SVC_PIN = 6
+SVC_PIN = 16
 
 UART_TX_PIN = 16
 UART_RX_PIN = 17

@@ -59,7 +59,14 @@ class RTC(BaseCommand):
             print('Error: RTC not available.')
             return
 
-        ntptime.settime()
+        ntptime.host = self.context.settings.ntp.server
+        print(f'NTP server  : {ntptime.host}')
+
+        try:
+            ntptime.settime()
+        except OSError:
+            print('Error: Sync failed. Device is not connected to the internet.')
+            return
 
         import machine
         dt = machine.RTC().datetime()
