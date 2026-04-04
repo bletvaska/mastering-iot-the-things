@@ -5,7 +5,8 @@ from .base import BaseCommand
 
 _KNOWN_DEVICES = {
     0x20: 'PCF8574 (I/O expander)',
-    0x27: 'PCF8574 (I/O expander)',
+    0x27: 'PCF8574 (I/O expander) / LCD 1602',
+    0x3F: 'PCF8574A (I/O expander) / LCD 1602',
     0x3C: 'SSD1306 (OLED display)',
     0x3D: 'SSD1306 (OLED display)',
     0x48: 'ADS1115 / TMP102',
