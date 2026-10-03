@@ -28,6 +28,13 @@ You need following additional packages to install:
 ```
 
 
+## Run Tests
+
+```bash
+$ uv run pytest
+```
+
+
 ## Links
 
 * [THSensor](https://github.com/bletvaska/mastering-iot-the-things) - project homepage at GitHub

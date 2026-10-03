@@ -2,7 +2,7 @@ from os import dupterm
 from machine import UART, Pin
 
 from commands import Blink, I2C, Measurements, Power, RTC, Commands, Devices, Help, Network, Reset, Settings, SysInfo, Uptime, Version
-from constants import UART_TX_PIN, UART_RX_PIN
+from constants import UART_TX_PIN, UART_RX_PIN, UART_BAUDRATE
 from hw.ws2812b import WS2812B
 from .base import BaseState
 
@@ -29,7 +29,7 @@ class ServiceTerminal(BaseState):
         self.context.parser.register(Version(self.context))
 
         # initialization of UART0 for serial console
-        uart = UART(0, baudrate=115200, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)
+        uart = UART(0, baudrate=UART_BAUDRATE, tx=Pin(UART_TX_PIN), rx=Pin(UART_RX_PIN), rxbuf=100)
         dupterm(uart)
 
     def exec(self):

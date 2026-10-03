@@ -35,13 +35,16 @@ class BaseState:
         """Called once when the state machine transitions into this state."""
         pass
 
-    def exec(self):
+    def exec(self) -> BaseState:
         """Called repeatedly while this state is active.
 
         Returns:
             The next state instance, or None to stop the state machine.
+
+        Raises:
+            NotImplementedError: If the concrete state does not override it.
         """
-        pass
+        raise NotImplementedError(f'{self.__class__.__name__}.exec() is not implemented.')
 
     def exit(self) -> None:
         """Called once when the state machine transitions out of this state."""

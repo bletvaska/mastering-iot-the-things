@@ -4,3 +4,7 @@ uv.lock
 src/lib/
 __pycache__/
 
+build/
+scripts/
+
+tests/

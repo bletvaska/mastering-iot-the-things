@@ -1,4 +1,4 @@
-__version__ = '2025.2'
+__version__ = '2026.8.1'
 __author__ = 'mirek <miroslav.binas@tuke.sk>'
 __all__ = [
     'BaseModel',
@@ -206,11 +206,13 @@ class BaseModel:
         else:
             super().__setattr__(name, value)
 
-        # custom validators
+        # custom validators — run against the value actually stored, which may
+        # differ from the raw input (e.g. a dict coerced into a nested model)
         validators = getattr(self.__class__, "__validators__", {})
         if name in validators:
-            for vfunc in validators[name]:
-                vfunc(self, value)
+            stored = getattr(self, name)
+            for run_validator in validators[name]:
+                run_validator(self, stored)
 
     def __repr__(self) -> str:
         items = [f"{key}={repr(value)}" for key, value in self.__dict__.items()]
